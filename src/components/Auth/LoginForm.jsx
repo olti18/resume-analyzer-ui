@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { FiMail, FiLock, FiLoader } from 'react-icons/fi';
+import { FiMail, FiLock } from 'react-icons/fi';
 
 export default function LoginForm() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({
+    username: '',
+    password: ''
+  });
   const [error, setError] = useState('');
   const { login, isLoading } = useAuth();
   const navigate = useNavigate();
@@ -13,7 +15,7 @@ export default function LoginForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    const result = await login(username, password);
+    const result = await login(formData.username, formData.password);
     if (result.success) {
       navigate('/resume');
     } else {
@@ -22,55 +24,64 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="auth-container">
-      <div className="auth-card">
-        <div className="auth-header">
-          <h2>Welcome Back</h2>
-          <p>Enter your credentials to continue</p>
-        </div>
-
-        <form onSubmit={handleSubmit} className="auth-form">
-          <div className="form-group">
-            <FiMail className="input-icon" />
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Username or Email"
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <FiLock className="input-icon" />
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
-              required
-            />
-          </div>
-
-          {error && (
-            <div className="error-message">
-              <span>{error}</span>
+    //<div className="auth-wrapper">
+      <div className="auth-overlay">
+        <div className="auth-card">
+          <div className="auth-header">
+            <div className="logo-wrapper">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <path d="M14 2v6h6" />
+                <path d="M16 13H8" />
+                <path d="M16 17H8" />
+                <path d="M10 9H8" />
+              </svg>
+              <span>ResumeAI</span>
             </div>
-          )}
+            <h1>Welcome Back</h1>
+            <p>Enter your credentials to continue</p>
+          </div>
 
-          <button type="submit" className="auth-button" disabled={isLoading}>
-            {isLoading ? (
-              <><FiLoader className="spin" /> Signing in...</>
-            ) : (
-              'Sign In'
-            )}
-          </button>
-        </form>
+          <form onSubmit={handleSubmit} className="auth-form">
+            <div className="input-group">
+              <div className="input-wrapper">
+                <FiMail className="input-icon" />
+                <input
+                  type="text"
+                  value={formData.username}
+                  onChange={(e) => setFormData({...formData, username: e.target.value})}
+                  placeholder="Username or Email"
+                  required
+                />
+              </div>
+              <div className="input-wrapper">
+                <FiLock className="input-icon" />
+                <input
+                  type="password"
+                  value={formData.password}
+                  onChange={(e) => setFormData({...formData, password: e.target.value})}
+                  placeholder="Password"
+                  required
+                />
+              </div>
+            </div>
 
-        <div className="auth-footer">
-          <p>Don't have an account? <a href="/register">Create Account</a></p>
+            {error && <div className="error-message">{error}</div>}
+
+            <button 
+              type="submit" 
+              className="submit-button"
+              disabled={isLoading}
+            >
+              {isLoading ? 'Signing in...' : 'Sign In'}
+            </button>
+          </form>
+
+          <div className="auth-footer">
+            <p>Don't have an account? <Link to="/register">Create Account</Link></p>
+          </div>
         </div>
       </div>
-    </div>
+    //</div>
   );
 }
