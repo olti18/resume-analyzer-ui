@@ -1,13 +1,19 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import Navbar from './Navbar';
+import Navbar from "./Navbar";
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-200/60 via-white to-indigo-150/60">
       <Navbar />
-      {/* Hero Section with Enhanced Styling */}
+      {/* Hero Section */}
       <div className="relative px-6 lg:px-8 overflow-hidden pt-16">
+        {/* Enhanced Gradient Blobs */}
+        <div className="absolute inset-0 -z-10">
+          <div className="absolute right-1/2 bottom-0 -mb-8 -mr-96 w-[300px] h-[300px] transform-gpu blur-3xl bg-gradient-to-r from-blue-200/60 to-indigo-300/60 opacity-70 animate-blob"></div>
+          <div className="absolute left-1/2 top-0 -ml-96 -mt-8 w-[300px] h-[300px] transform-gpu blur-3xl bg-gradient-to-r from-indigo-200/60 to-purple-300/60 opacity-70 animate-blob animation-delay-2000"></div>
+        </div>
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -86,9 +92,14 @@ export default function LandingPage() {
       </div>
 
       {/* Statistics Section */}
-      <div className="bg-white/80 backdrop-blur-sm py-12 relative overflow-hidden">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(45rem_50rem_at_top,theme(colors.indigo.100),white)]"></div>
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <div className="relative overflow-hidden">
+        {/* Enhanced Statistics Background */}
+        <div className="absolute inset-0 -z-10">
+          <div className="absolute right-1/2 bottom-0 -mb-8 -mr-96 w-[400px] h-[400px] transform-gpu blur-3xl bg-gradient-to-r from-blue-200/60 to-indigo-300/60 opacity-70 animate-blob"></div>
+          <div className="absolute left-1/2 top-0 -ml-96 -mt-8 w-[400px] h-[400px] transform-gpu blur-3xl bg-gradient-to-r from-indigo-200/60 to-purple-300/60 opacity-70 animate-blob animation-delay-4000"></div>
+        </div>
+
+        <div className="mx-auto max-w-7xl px-6 lg:px-8 py-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -103,14 +114,19 @@ export default function LandingPage() {
                 key={stat.name}
                 className="relative group"
               >
-                <div className="absolute -inset-1 rounded-lg bg-gradient-to-r from-blue-100 to-indigo-100 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <div className="relative bg-white rounded-lg p-6 text-center shadow-sm ring-1 ring-gray-900/5 group-hover:shadow-md transition-shadow duration-300">
-                  <dt className="text-base leading-7 text-gray-600">
+                <div className="absolute -inset-2 rounded-xl bg-gradient-to-r from-blue-500/50 to-indigo-500/50 opacity-0 group-hover:opacity-20 transition-all duration-500 blur-xl"></div>
+                <div className="relative bg-white/60 backdrop-blur-xl rounded-xl p-8 text-center shadow-lg ring-1 ring-gray-900/10 group-hover:shadow-2xl group-hover:bg-white/70 transition-all duration-300">
+                  <dt className="text-base font-medium text-gray-700 group-hover:text-blue-600 transition-colors">
                     {stat.name}
                   </dt>
-                  <dd className="text-3xl font-bold leading-9 tracking-tight text-blue-600 mt-2">
+                  <motion.dd
+                    initial={{ scale: 1 }}
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                    className="mt-3 text-4xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600"
+                  >
                     {stat.value}
-                  </dd>
+                  </motion.dd>
                 </div>
               </motion.div>
             ))}
@@ -130,15 +146,15 @@ export default function LandingPage() {
                 transition={{ duration: 0.6 }}
                 className="absolute right-[10%] top-[-15%] w-[280px]"
               >
-                <motion.div 
-                  whileHover={{ 
+                <motion.div
+                  whileHover={{
                     scale: 1.1,
                     zIndex: 20, // Ensures this comes to front when hovered
                     transition: {
                       type: "spring",
                       stiffness: 300,
-                      damping: 15
-                    }
+                      damping: 15,
+                    },
                   }}
                   className="relative bg-white p-2 rounded-2xl shadow-xl hover:shadow-2xl transform transition-all duration-300"
                 >
@@ -162,14 +178,14 @@ export default function LandingPage() {
                 className="absolute left-0 bottom-0 w-[280px] z-10"
               >
                 <motion.div
-                  whileHover={{ 
+                  whileHover={{
                     scale: 1.1,
                     zIndex: 20, // Ensures this comes to front when hovered
                     transition: {
                       type: "spring",
                       stiffness: 300,
-                      damping: 15
-                    }
+                      damping: 15,
+                    },
                   }}
                   className="relative bg-white p-2 rounded-2xl shadow-xl hover:shadow-2xl transform transition-all duration-300"
                 >
@@ -237,7 +253,9 @@ export default function LandingPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-center text-base/7 font-semibold text-blue-600">Advanced Features</h2>
+            <h2 className="text-center text-base/7 font-semibold text-blue-600">
+              Advanced Features
+            </h2>
             <p className="mx-auto mt-2 max-w-lg text-center text-4xl font-semibold tracking-tight text-balance text-gray-900 sm:text-5xl">
               Everything you need for your resume
             </p>
@@ -245,7 +263,7 @@ export default function LandingPage() {
 
           <div className="mt-10 grid gap-4 sm:mt-16 lg:grid-cols-3 lg:grid-rows-2">
             {/* Resume Analysis Card */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
@@ -258,7 +276,8 @@ export default function LandingPage() {
                     Resume Analysis
                   </p>
                   <p className="mt-2 max-w-lg text-sm/6 text-gray-600 max-lg:text-center">
-                    Our AI-powered system analyzes every aspect of your resume in real-time, providing detailed feedback for improvement.
+                    Our AI-powered system analyzes every aspect of your resume
+                    in real-time, providing detailed feedback for improvement.
                   </p>
                 </div>
                 <div className="@container relative min-h-[30rem] w-full grow max-lg:mx-auto max-lg:max-w-sm">
@@ -275,7 +294,7 @@ export default function LandingPage() {
             </motion.div>
 
             {/* ATS Optimization Card */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
@@ -284,9 +303,12 @@ export default function LandingPage() {
               <div className="absolute inset-px rounded-lg bg-white/90 backdrop-blur-sm max-lg:rounded-t-[2rem]"></div>
               <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(1.5rem+1px)] max-lg:rounded-t-[calc(2rem+1px)]">
                 <div className="px-8 pt-8 sm:px-10 sm:pt-10">
-                  <p className="mt-2 text-lg font-medium tracking-tight text-gray-900 max-lg:text-center">ATS Optimization</p>
+                  <p className="mt-2 text-lg font-medium tracking-tight text-gray-900 max-lg:text-center">
+                    ATS Optimization
+                  </p>
                   <p className="mt-2 max-w-lg text-sm/6 text-gray-600 max-lg:text-center">
-                    Ensure your resume passes through ATS systems with our advanced keyword analysis and formatting suggestions.
+                    Ensure your resume passes through ATS systems with our
+                    advanced keyword analysis and formatting suggestions.
                   </p>
                 </div>
                 <div className="flex flex-1 items-center justify-center px-8 max-lg:pt-10 max-lg:pb-12 sm:px-10 lg:pb-2">
@@ -301,7 +323,7 @@ export default function LandingPage() {
             </motion.div>
 
             {/* Skills Analysis Card */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
@@ -310,9 +332,12 @@ export default function LandingPage() {
               <div className="absolute inset-px rounded-lg bg-white/90 backdrop-blur-sm"></div>
               <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(1.5rem+1px)]">
                 <div className="px-8 pt-8 sm:px-10 sm:pt-10">
-                  <p className="mt-2 text-lg font-medium tracking-tight text-gray-900 max-lg:text-center">Skills Analysis</p>
+                  <p className="mt-2 text-lg font-medium tracking-tight text-gray-900 max-lg:text-center">
+                    Skills Analysis
+                  </p>
                   <p className="mt-2 max-w-lg text-sm/6 text-gray-600 max-lg:text-center">
-                    In-depth analysis of your skills and experience, matched against job market requirements.
+                    In-depth analysis of your skills and experience, matched
+                    against job market requirements.
                   </p>
                 </div>
                 <div className="@container flex flex-1 items-center max-lg:py-6 lg:pb-2">
@@ -327,7 +352,7 @@ export default function LandingPage() {
             </motion.div>
 
             {/* AI Suggestions Card */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
@@ -340,7 +365,8 @@ export default function LandingPage() {
                     AI Suggestions
                   </p>
                   <p className="mt-2 max-w-lg text-sm/6 text-gray-600 max-lg:text-center">
-                    Get intelligent suggestions for improving your resume content, structure, and formatting.
+                    Get intelligent suggestions for improving your resume
+                    content, structure, and formatting.
                   </p>
                 </div>
                 <div className="relative min-h-[30rem] w-full grow">
@@ -350,7 +376,9 @@ export default function LandingPage() {
                         <div className="border-r border-b border-r-white/10 border-b-white/20 bg-white/5 px-4 py-2 text-white">
                           AI Suggestions
                         </div>
-                        <div className="border-r border-gray-600/10 px-4 py-2">Resume.pdf</div>
+                        <div className="border-r border-gray-600/10 px-4 py-2">
+                          Resume.pdf
+                        </div>
                       </div>
                     </div>
                     <div className="px-6 pt-6 pb-14">
@@ -389,10 +417,10 @@ export default function LandingPage() {
 }
 
 const stats = [
-  { name: "CVs Analyzed", value: "10,000+" },
-  { name: "Success Rate", value: "94%" },
-  { name: "Companies", value: "500+" },
-  { name: "Job Matches", value: "50K+" },
+  { name: "Active Users", value: "10K+" },
+  { name: "Resumes Analyzed", value: "50K+" },
+  { name: "Success Rate", value: "95%" },
+  { name: "AI Suggestions", value: "1M+" },
 ];
 
 // Keep only the features array
