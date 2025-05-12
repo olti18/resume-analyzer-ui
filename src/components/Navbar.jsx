@@ -19,7 +19,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 font-semibold ${
         isScrolled
           ? "bg-white/80 backdrop-blur-md shadow-lg shadow-blue-900/5"
           : "bg-transparent"
@@ -75,13 +75,13 @@ export default function Navbar() {
                 />
               </svg>
             </motion.div>
-            <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
+            <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 font-outfit">
               ResumeAI
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-8 font-outfit">
             {["Features", "Pricing", "About"].map((item) => (
               <motion.div
                 key={item}
@@ -141,7 +141,7 @@ export default function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="md:hidden bg-white/90 backdrop-blur-lg border-t border-gray-100"
+            className="md:hidden bg-white/90 backdrop-blur-lg border-t border-gray-100 font-outfit"
           >
             <div className="px-4 py-5 space-y-3">
               {["Features", "Pricing", "About", "Sign In"].map((item) => (

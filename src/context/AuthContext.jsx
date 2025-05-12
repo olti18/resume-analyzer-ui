@@ -1,13 +1,28 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 import Cookies from 'js-cookie';
 
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const BASE_URL = 'http://localhost:3000/Resume_Analyzer_db';  // Updated URL
+
+  // Check authentication status on mount
+  useEffect(() => {
+    const token = Cookies.get('token');
+    if (token) {
+      setIsAuthenticated(true);
+      // If you stored user data, retrieve it here
+      const userData = localStorage.getItem('user');
+      if (userData) {
+        setUser(JSON.parse(userData));
+      }
+    }
+    setIsLoading(false);
+  }, []);
 
   const login = async (username, password) => {
     setIsLoading(true);
@@ -39,7 +54,10 @@ export const AuthProvider = ({ children }) => {
           secure: true,
           sameSite: 'lax'
         });
-        setUser({ username });
+        const userData = { username };
+        setUser(userData);
+        setIsAuthenticated(true);
+        localStorage.setItem('user', JSON.stringify(userData));
         return { success: true };
       }
       
@@ -86,11 +104,20 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     Cookies.remove('token');
+    localStorage.removeItem('user');
     setUser(null);
+    setIsAuthenticated(false);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, isLoading }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      login, 
+      register, 
+      logout, 
+      isLoading,
+      isAuthenticated 
+    }}>
       {children}
     </AuthContext.Provider>
   );
