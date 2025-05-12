@@ -1,9 +1,14 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider } from './context/AuthContext';
-import LoginForm from './components/Auth/LoginForm';
-import RegisterForm from './components/Auth/RegisterForm';
-import CvAnalysisPage from './components/CvAnalysis/CvAnalysisPage';
-import ProtectedRoute from './components/ProtectedRoute';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
+import LoginForm from "./components/Auth/LoginForm";
+import RegisterForm from "./components/Auth/RegisterForm";
+import CvAnalysisPage from "./components/CvAnalysis/CvAnalysisPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 import "./App.css";
 

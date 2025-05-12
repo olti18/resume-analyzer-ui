@@ -111,7 +111,9 @@ export default function CvAnalysisPage() {
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 rounded-xl blur opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 <div className="relative bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-sm border border-gray-100">
                   <stat.icon className={`w-6 h-6 ${stat.color} mb-4`} />
-                  <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {stat.value}
+                  </p>
                   <p className="text-sm text-gray-600">{stat.label}</p>
                 </div>
               </motion.div>

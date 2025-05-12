@@ -1,5 +1,5 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import Cookies from 'js-cookie';
+import { createContext, useContext, useState, useEffect } from "react";
+import Cookies from "js-cookie";
 
 const AuthContext = createContext(null);
 
@@ -8,15 +8,15 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const BASE_URL = 'http://localhost:3000/Resume_Analyzer_db';  // Updated URL
+  const BASE_URL = "http://localhost:3000/Resume_Analyzer_db"; // Updated URL
 
   // Check authentication status on mount
   useEffect(() => {
-    const token = Cookies.get('token');
+    const token = Cookies.get("token");
     if (token) {
       setIsAuthenticated(true);
       // If you stored user data, retrieve it here
-      const userData = localStorage.getItem('user');
+      const userData = localStorage.getItem("user");
       if (userData) {
         setUser(JSON.parse(userData));
       }
@@ -28,17 +28,17 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(true);
     try {
       const response = await fetch(`${BASE_URL}/auth/login`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Accept': 'application/json'
+          "Content-Type": "application/x-www-form-urlencoded",
+          Accept: "application/json",
         },
-        credentials: 'include',
-        mode: 'cors',  // Added mode
+        credentials: "include",
+        mode: "cors", // Added mode
         body: new URLSearchParams({
           username,
           password,
-        }).toString()
+        }).toString(),
       });
 
       if (!response.ok) {
@@ -46,27 +46,27 @@ export const AuthProvider = ({ children }) => {
       }
 
       const data = await response.json();
-      console.log('Login response:', data); // Debug log
-      
+      console.log("Login response:", data); // Debug log
+
       if (data.access_token) {
-        Cookies.set('token', data.access_token, { 
+        Cookies.set("token", data.access_token, {
           expires: 7,
           secure: true,
-          sameSite: 'lax'
+          sameSite: "lax",
         });
         const userData = { username };
         setUser(userData);
         setIsAuthenticated(true);
-        localStorage.setItem('user', JSON.stringify(userData));
+        localStorage.setItem("user", JSON.stringify(userData));
         return { success: true };
       }
-      
-      throw new Error('No access token received');
+
+      throw new Error("No access token received");
     } catch (error) {
-      console.error('Login error:', error);
-      return { 
-        success: false, 
-        error: error.message || 'Failed to connect to the server'
+      console.error("Login error:", error);
+      return {
+        success: false,
+        error: error.message || "Failed to connect to the server",
       };
     } finally {
       setIsLoading(false);
@@ -77,9 +77,9 @@ export const AuthProvider = ({ children }) => {
     setIsLoading(true);
     try {
       const response = await fetch(`${BASE_URL}/auth/register`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          "Content-Type": "application/x-www-form-urlencoded",
         },
         body: new URLSearchParams({
           username,
@@ -89,35 +89,37 @@ export const AuthProvider = ({ children }) => {
       });
 
       const data = await response.json();
-      
+
       if (response.ok) {
         return { success: true };
       } else {
         return { success: false, error: data.error };
       }
     } catch (error) {
-      return { success: false, error: 'Network error' };
+      return { success: false, error: "Network error" };
     } finally {
       setIsLoading(false);
     }
   };
 
   const logout = () => {
-    Cookies.remove('token');
-    localStorage.removeItem('user');
+    Cookies.remove("token");
+    localStorage.removeItem("user");
     setUser(null);
     setIsAuthenticated(false);
   };
 
   return (
-    <AuthContext.Provider value={{ 
-      user, 
-      login, 
-      register, 
-      logout, 
-      isLoading,
-      isAuthenticated 
-    }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        login,
+        register,
+        logout,
+        isLoading,
+        isAuthenticated,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
