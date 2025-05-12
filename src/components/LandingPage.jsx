@@ -1,11 +1,13 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import Navbar from './Navbar';
 
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-50">
+      <Navbar />
       {/* Hero Section with Enhanced Styling */}
-      <div className="relative px-6 lg:px-8 overflow-hidden">
+      <div className="relative px-6 lg:px-8 overflow-hidden pt-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
