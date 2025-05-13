@@ -87,12 +87,16 @@ const MetricCard = ({ label, value, icon: Icon, trend }) => (
         <span className="text-sm font-medium text-gray-600">{label}</span>
       </div>
       {trend && (
-        <span className={`text-xs font-medium ${
-          trend === 'up' ? 'text-green-500' : 
-          trend === 'down' ? 'text-red-500' : 
-          'text-gray-500'
-        }`}>
-          {trend === 'up' ? '↑' : trend === 'down' ? '↓' : '→'} 
+        <span
+          className={`text-xs font-medium ${
+            trend === "up"
+              ? "text-green-500"
+              : trend === "down"
+              ? "text-red-500"
+              : "text-gray-500"
+          }`}
+        >
+          {trend === "up" ? "↑" : trend === "down" ? "↓" : "→"}
         </span>
       )}
     </div>
@@ -116,79 +120,90 @@ export default function CvAnalysisPage() {
     }
   }, [isAuthenticated, token]);
 
-  const onDrop = useCallback(async (acceptedFiles) => {
-    if (!isAuthenticated || !token) {
-      setError("Please log in to analyze your CV");
-      return;
-    }
+  const onDrop = useCallback(
+    async (acceptedFiles) => {
+      if (!isAuthenticated || !token) {
+        setError("Please log in to analyze your CV");
+        return;
+      }
 
-    const file = acceptedFiles[0];
-    
-    // Validate file size
-    if (file.size > 5 * 1024 * 1024) { // 5MB limit
-      setError("File size too large. Please upload a file smaller than 5MB");
-      return;
-    }
+      const file = acceptedFiles[0];
 
-    setFile(file);
-    setLoading(true);
-    setError(null);
-    setProgress(0);
+      // Validate file size
+      if (file.size > 5 * 1024 * 1024) {
+        // 5MB limit
+        setError("File size too large. Please upload a file smaller than 5MB");
+        return;
+      }
 
-    const formData = new FormData();
-    formData.append("file", file);
+      setFile(file);
+      setLoading(true);
+      setError(null);
+      setProgress(0);
 
-    // Debug request details
-    console.log("Upload details:", {
-      fileName: file.name,
-      fileSize: `${(file.size / 1024).toFixed(2)}KB`,
-      fileType: file.type,
-      token: token ? "Present" : "Missing"
-    });
+      const formData = new FormData();
+      formData.append("file", file);
 
-    try {
-      setProgressText("Starting upload...");
-      
-      const response = await fetch("http://localhost:3000/Resume_Analyzer_db/api/cv/upload", {
-        method: "POST",
-        body: formData,
-        headers: {
-          'Authorization': `Bearer ${token}`,
-        },
-        credentials: "include"
+      // Debug request details
+      console.log("Upload details:", {
+        fileName: file.name,
+        fileSize: `${(file.size / 1024).toFixed(2)}KB`,
+        fileType: file.type,
+        token: token ? "Present" : "Missing",
       });
 
-      console.log("Response status:", response.status);
-      const responseText = await response.text();
-      console.log("Raw response:", responseText);
-
-      if (!response.ok) {
-        throw new Error(`Upload failed (${response.status}): ${responseText || 'No error details available'}`);
-      }
-
-      let data;
       try {
-        data = responseText ? JSON.parse(responseText) : null;
-        if (!data) {
-          throw new Error("Empty response from server");
+        setProgressText("Starting upload...");
+
+        const response = await fetch(
+          "http://localhost:3000/Resume_Analyzer_db/api/cv/upload",
+          {
+            method: "POST",
+            body: formData,
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            credentials: "include",
+          }
+        );
+
+        console.log("Response status:", response.status);
+        const responseText = await response.text();
+        console.log("Raw response:", responseText);
+
+        if (!response.ok) {
+          throw new Error(
+            `Upload failed (${response.status}): ${
+              responseText || "No error details available"
+            }`
+          );
         }
-        // Extract the actual analysis content from the response
-        const analysisContent = data.choices?.[0]?.message?.content;
-        if (!analysisContent) {
-          throw new Error("Invalid analysis format");
+
+        let data;
+        try {
+          data = responseText ? JSON.parse(responseText) : null;
+          if (!data) {
+            throw new Error("Empty response from server");
+          }
+          // Extract the actual analysis content from the response
+          const analysisContent = data.choices?.[0]?.message?.content;
+          if (!analysisContent) {
+            throw new Error("Invalid analysis format");
+          }
+          setAnalysis(analysisContent);
+        } catch (parseError) {
+          console.error("Parse error:", parseError);
+          throw new Error("Failed to parse server response");
         }
-        setAnalysis(analysisContent);
-      } catch (parseError) {
-        console.error("Parse error:", parseError);
-        throw new Error("Failed to parse server response");
+      } catch (err) {
+        console.error("Upload error:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      console.error("Upload error:", err);
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  }, [token, isAuthenticated]);
+    },
+    [token, isAuthenticated]
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -392,95 +407,165 @@ export default function CvAnalysisPage() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mt-12 space-y-8"
+                className="mt-12 space-y-10"
               >
-                {/* Enhanced Score Section */}
-                <div className="bg-gradient-to-br from-white/90 to-white/50 backdrop-blur-xl rounded-2xl p-8 shadow-xl border border-blue-100/20">
-                  <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
-                    <ScoreIndicator 
-                      score={typeof analysis === 'string' && analysis.includes("92-95%") ? 94 : 78} 
-                    />
-                    
-                    <div className="flex-1 space-y-6">
-                      <div>
-                        <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                          ATS Compatibility Analysis
-                        </h2>
-                        <p className="text-gray-600">
-                          {typeof analysis === 'string' && analysis.includes("92-95%") 
-                            ? "Excellent! Your CV is highly optimized for ATS systems."
-                            : "Good foundation. Some improvements could boost your ATS compatibility."}
-                        </p>
+                {/* Score Section with Enhanced Design */}
+                <motion.div 
+                  className="bg-gradient-to-br from-white/90 to-white/50 backdrop-blur-xl rounded-2xl p-10 shadow-xl border border-blue-100/20 relative overflow-hidden group"
+                  whileHover={{ scale: 1.02, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.08)" }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                >
+                  {/* Decorative Elements */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-indigo-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute -right-24 -top-24 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl group-hover:bg-blue-500/20 transition-colors duration-500" />
+                  <div className="absolute -left-24 -bottom-24 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl group-hover:bg-indigo-500/20 transition-colors duration-500" />
+
+                  <div className="relative z-10">
+                    <div className="flex items-center justify-between space-x-10">
+                      {/* Enhanced Score Circle */}
+                      <div className="relative">
+                        <svg className="w-40 h-40 transform transition-transform duration-1000 group-hover:rotate-180">
+                          <circle
+                            className="text-blue-50"
+                            strokeWidth="10"
+                            stroke="currentColor"
+                            fill="transparent"
+                            r="70"
+                            cx="80"
+                            cy="80"
+                          />
+                          <motion.circle
+                            className="text-blue-600"
+                            strokeWidth="10"
+                            strokeLinecap="round"
+                            stroke="url(#gradient)"
+                            fill="transparent"
+                            r="70"
+                            cx="80"
+                            cy="80"
+                            initial={{ strokeDashoffset: 440 }}
+                            animate={{ 
+                              strokeDashoffset: 440 - (440 * parseInt(typeof analysis === 'string' && analysis.includes("92-95%") ? "94" : "78")) / 100 
+                            }}
+                            strokeDasharray="440"
+                            transform="rotate(-90 80 80)"
+                          />
+                          <defs>
+                            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                              <stop offset="0%" stopColor="#2563EB" />
+                              <stop offset="100%" stopColor="#4F46E5" />
+                            </linearGradient>
+                          </defs>
+                        </svg>
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="text-center">
+                            <motion.h2 
+                              className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600"
+                              initial={{ scale: 0.5, opacity: 0 }}
+                              animate={{ scale: 1, opacity: 1 }}
+                              transition={{ delay: 0.5, type: "spring" }}
+                            >
+                              {typeof analysis === 'string' && analysis.includes("92-95%") ? "94%" : "78%"}
+                            </motion.h2>
+                            <p className="text-sm font-medium text-gray-500 mt-1">Overall Score</p>
+                          </div>
+                        </div>
                       </div>
 
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                        <MetricCard 
-                          label="Keywords Match"
-                          value="92%"
-                          icon={FiCheckCircle}
-                          trend="up"
-                        />
-                        <MetricCard 
-                          label="Format Score"
-                          value="88%"
-                          icon={FiFileText}
-                          trend="neutral"
-                        />
-                        <MetricCard 
-                          label="Content Quality"
-                          value="95%"
-                          icon={FiStar}
-                          trend="up"
-                        />
+                      {/* Enhanced Score Details */}
+                      <div className="flex-1 space-y-6">
+                        <div>
+                          <h3 className="text-2xl font-bold text-gray-900 mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
+                            ATS Matching Score
+                          </h3>
+                          <p className="text-base text-gray-600 leading-relaxed max-w-xl">
+                            {parseInt(typeof analysis === 'string' && analysis.includes("92-95%") ? "94" : "78") >= 90 
+                              ? "Excellent! Your CV is highly optimized for ATS systems. You're well-positioned to pass automated screenings."
+                              : "Good start! With some targeted improvements, you can significantly boost your ATS compatibility and increase your chances of getting noticed."}
+                          </p>
+                        </div>
+
+                        {/* Score Breakdown */}
+                        <div className="grid grid-cols-3 gap-4">
+                          <div className="p-4 rounded-xl bg-blue-50/50 border border-blue-100/50">
+                            <div className="text-blue-600 font-semibold">Keywords</div>
+                            <div className="text-2xl font-bold text-gray-900">92%</div>
+                          </div>
+                          <div className="p-4 rounded-xl bg-indigo-50/50 border border-indigo-100/50">
+                            <div className="text-indigo-600 font-semibold">Format</div>
+                            <div className="text-2xl font-bold text-gray-900">88%</div>
+                          </div>
+                          <div className="p-4 rounded-xl bg-purple-50/50 border border-purple-100/50">
+                            <div className="text-purple-600 font-semibold">Content</div>
+                            <div className="text-2xl font-bold text-gray-900">95%</div>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Enhanced Analysis Sections */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {typeof analysis === 'string' && analysis.split('\n\n').map((section, index) => {
-                    if (section.startsWith('**')) {
-                      const title = section.match(/\*\*(.*?)\*\*/)?.[1] || '';
-                      return (
-                        <motion.div
-                          key={index}
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: index * 0.1 }}
-                          className="group relative"
-                        >
-                          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-indigo-500/5 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-all duration-300" />
-                          <div className="relative bg-gradient-to-br from-white/90 to-white/50 backdrop-blur-xl rounded-xl p-6 shadow-lg border border-blue-100/20 h-full hover:shadow-xl transition-all duration-300">
-                            <div className="flex items-center gap-3 mb-4">
-                              {title.includes("Strengths") && <FiCheckCircle className="w-6 h-6 text-green-500" />}
-                              {title.includes("Improve") && <FiTool className="w-6 h-6 text-amber-500" />}
-                              {title.includes("Critical") && <FiAlertTriangle className="w-6 h-6 text-red-500" />}
-                              {title.includes("Recommend") && <FiZap className="w-6 h-6 text-blue-500" />}
-                              <h3 className="text-xl font-semibold text-gray-900">{title}</h3>
-                            </div>
-                            <div className="prose prose-blue prose-sm max-w-none">
-                              {section.replace(/\*\*(.*?)\*\*/, '').trim().split('\n').map((line, i) => (
-                                <div key={i} className="mb-2">
-                                  {line.startsWith('- ') ? (
-                                    <div className="flex items-start gap-2">
-                                      <div className="mt-1.5">
-                                        <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
-                                      </div>
-                                      <p className="text-gray-700">{line.replace('- ', '')}</p>
+                  {typeof analysis === "string" &&
+                    analysis.split("\n\n").map((section, index) => {
+                      if (section.startsWith("**")) {
+                        const title = section.match(/\*\*(.*?)\*\*/)?.[1] || "";
+                        return (
+                          <motion.div
+                            key={index}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: index * 0.1 }}
+                            className="group relative"
+                          >
+                            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-indigo-500/5 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-all duration-300" />
+                            <div className="relative bg-gradient-to-br from-white/90 to-white/50 backdrop-blur-xl rounded-xl p-6 shadow-lg border border-blue-100/20 h-full hover:shadow-xl transition-all duration-300">
+                              <div className="flex items-center gap-3 mb-4">
+                                {title.includes("Strengths") && (
+                                  <FiCheckCircle className="w-6 h-6 text-green-500" />
+                                )}
+                                {title.includes("Improve") && (
+                                  <FiTool className="w-6 h-6 text-amber-500" />
+                                )}
+                                {title.includes("Critical") && (
+                                  <FiAlertTriangle className="w-6 h-6 text-red-500" />
+                                )}
+                                {title.includes("Recommend") && (
+                                  <FiZap className="w-6 h-6 text-blue-500" />
+                                )}
+                                <h3 className="text-xl font-semibold text-gray-900">
+                                  {title}
+                                </h3>
+                              </div>
+                              <div className="prose prose-blue prose-sm max-w-none">
+                                {section
+                                  .replace(/\*\*(.*?)\*\*/, "")
+                                  .trim()
+                                  .split("\n")
+                                  .map((line, i) => (
+                                    <div key={i} className="mb-2">
+                                      {line.startsWith("- ") ? (
+                                        <div className="flex items-start gap-2">
+                                          <div className="mt-1.5">
+                                            <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                                          </div>
+                                          <p className="text-gray-700">
+                                            {line.replace("- ", "")}
+                                          </p>
+                                        </div>
+                                      ) : (
+                                        <p className="text-gray-700">{line}</p>
+                                      )}
                                     </div>
-                                  ) : (
-                                    <p className="text-gray-700">{line}</p>
-                                  )}
-                                </div>
-                              ))}
+                                  ))}
+                              </div>
                             </div>
-                          </div>
-                        </motion.div>
-                      );
-                    }
-                    return null;
-                  })}
+                          </motion.div>
+                        );
+                      }
+                      return null;
+                    })}
                 </div>
               </motion.div>
             )}
@@ -500,7 +585,7 @@ export default function CvAnalysisPage() {
                     <p className="font-medium">Upload Failed</p>
                   </div>
                   <p className="text-red-600 text-sm ml-8">{error}</p>
-                  {process.env.NODE_ENV === 'development' && (
+                  {process.env.NODE_ENV === "development" && (
                     <p className="text-red-400 text-xs ml-8 mt-1">
                       Check browser console for more details
                     </p>
