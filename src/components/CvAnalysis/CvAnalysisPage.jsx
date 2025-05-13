@@ -41,6 +41,65 @@ const AnalysisSection = ({ title, items, icon: Icon, color }) => (
   </div>
 );
 
+const ScoreIndicator = ({ score }) => (
+  <div className="relative w-48 h-48">
+    <svg className="w-full h-full" viewBox="0 0 100 100">
+      <circle
+        cx="50"
+        cy="50"
+        r="45"
+        fill="none"
+        stroke="#f0f0f0"
+        strokeWidth="10"
+      />
+      <circle
+        cx="50"
+        cy="50"
+        r="45"
+        fill="none"
+        stroke="url(#scoreGradient)"
+        strokeWidth="10"
+        strokeLinecap="round"
+        strokeDasharray={`${score * 2.83} 283`}
+        transform="rotate(-90 50 50)"
+      />
+      <defs>
+        <linearGradient id="scoreGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#2563eb" />
+          <stop offset="100%" stopColor="#4f46e5" />
+        </linearGradient>
+      </defs>
+    </svg>
+    <div className="absolute inset-0 flex items-center justify-center flex-col">
+      <span className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
+        {score}%
+      </span>
+      <span className="text-sm text-gray-500">Score</span>
+    </div>
+  </div>
+);
+
+const MetricCard = ({ label, value, icon: Icon, trend }) => (
+  <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-gray-100 hover:bg-white/80 transition-all duration-300 group">
+    <div className="flex items-center justify-between mb-2">
+      <div className="flex items-center space-x-2">
+        <Icon className="w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors" />
+        <span className="text-sm font-medium text-gray-600">{label}</span>
+      </div>
+      {trend && (
+        <span className={`text-xs font-medium ${
+          trend === 'up' ? 'text-green-500' : 
+          trend === 'down' ? 'text-red-500' : 
+          'text-gray-500'
+        }`}>
+          {trend === 'up' ? '↑' : trend === 'down' ? '↓' : '→'} 
+        </span>
+      )}
+    </div>
+    <p className="text-2xl font-bold text-gray-900">{value}</p>
+  </div>
+);
+
 export default function CvAnalysisPage() {
   const { token, isAuthenticated } = useAuth();
 
@@ -333,33 +392,96 @@ export default function CvAnalysisPage() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mt-8 space-y-6"
+                className="mt-12 space-y-8"
               >
-                {/* Score Section */}
-                <div className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-gray-100">
-                  <div className="text-center">
-                    <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
-                      {typeof analysis === 'string' && analysis.includes("92-95%") ? "94%" : "78%"}
-                    </h2>
-                    <p className="text-gray-600 mt-2">ATS Matching Score</p>
+                {/* Enhanced Score Section */}
+                <div className="bg-gradient-to-br from-white/90 to-white/50 backdrop-blur-xl rounded-2xl p-8 shadow-xl border border-blue-100/20">
+                  <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
+                    <ScoreIndicator 
+                      score={typeof analysis === 'string' && analysis.includes("92-95%") ? 94 : 78} 
+                    />
+                    
+                    <div className="flex-1 space-y-6">
+                      <div>
+                        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+                          ATS Compatibility Analysis
+                        </h2>
+                        <p className="text-gray-600">
+                          {typeof analysis === 'string' && analysis.includes("92-95%") 
+                            ? "Excellent! Your CV is highly optimized for ATS systems."
+                            : "Good foundation. Some improvements could boost your ATS compatibility."}
+                        </p>
+                      </div>
+
+                      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                        <MetricCard 
+                          label="Keywords Match"
+                          value="92%"
+                          icon={FiCheckCircle}
+                          trend="up"
+                        />
+                        <MetricCard 
+                          label="Format Score"
+                          value="88%"
+                          icon={FiFileText}
+                          trend="neutral"
+                        />
+                        <MetricCard 
+                          label="Content Quality"
+                          value="95%"
+                          icon={FiStar}
+                          trend="up"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                {/* Parse and display the markdown sections */}
-                {typeof analysis === 'string' && analysis.split('\n\n').map((section, index) => {
-                  if (section.startsWith('**')) {
-                    const title = section.match(/\*\*(.*?)\*\*/)?.[1] || '';
-                    return (
-                      <div key={index} className="bg-white/80 backdrop-blur-sm rounded-xl p-6 shadow-lg border border-gray-100">
-                        <h3 className="text-xl font-semibold mb-4">{title}</h3>
-                        <div className="prose prose-blue max-w-none">
-                          {section.replace(/\*\*(.*?)\*\*/, '').trim()}
-                        </div>
-                      </div>
-                    );
-                  }
-                  return null;
-                })}
+                {/* Enhanced Analysis Sections */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {typeof analysis === 'string' && analysis.split('\n\n').map((section, index) => {
+                    if (section.startsWith('**')) {
+                      const title = section.match(/\*\*(.*?)\*\*/)?.[1] || '';
+                      return (
+                        <motion.div
+                          key={index}
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.1 }}
+                          className="group relative"
+                        >
+                          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-indigo-500/5 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-all duration-300" />
+                          <div className="relative bg-gradient-to-br from-white/90 to-white/50 backdrop-blur-xl rounded-xl p-6 shadow-lg border border-blue-100/20 h-full hover:shadow-xl transition-all duration-300">
+                            <div className="flex items-center gap-3 mb-4">
+                              {title.includes("Strengths") && <FiCheckCircle className="w-6 h-6 text-green-500" />}
+                              {title.includes("Improve") && <FiTool className="w-6 h-6 text-amber-500" />}
+                              {title.includes("Critical") && <FiAlertTriangle className="w-6 h-6 text-red-500" />}
+                              {title.includes("Recommend") && <FiZap className="w-6 h-6 text-blue-500" />}
+                              <h3 className="text-xl font-semibold text-gray-900">{title}</h3>
+                            </div>
+                            <div className="prose prose-blue prose-sm max-w-none">
+                              {section.replace(/\*\*(.*?)\*\*/, '').trim().split('\n').map((line, i) => (
+                                <div key={i} className="mb-2">
+                                  {line.startsWith('- ') ? (
+                                    <div className="flex items-start gap-2">
+                                      <div className="mt-1.5">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                                      </div>
+                                      <p className="text-gray-700">{line.replace('- ', '')}</p>
+                                    </div>
+                                  ) : (
+                                    <p className="text-gray-700">{line}</p>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        </motion.div>
+                      );
+                    }
+                    return null;
+                  })}
+                </div>
               </motion.div>
             )}
 
