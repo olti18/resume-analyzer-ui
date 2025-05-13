@@ -7,6 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [token, setToken] = useState(Cookies.get("token")); // Add this line
 
   const BASE_URL = "http://localhost:3000/Resume_Analyzer_db"; // Updated URL
 
@@ -54,6 +55,7 @@ export const AuthProvider = ({ children }) => {
           secure: true,
           sameSite: "lax",
         });
+        setToken(data.access_token); // Add this line
         const userData = { username };
         setUser(userData);
         setIsAuthenticated(true);
@@ -106,6 +108,7 @@ export const AuthProvider = ({ children }) => {
     Cookies.remove("token");
     localStorage.removeItem("user");
     setUser(null);
+    setToken(null); // Add this line
     setIsAuthenticated(false);
   };
 
@@ -113,6 +116,7 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         user,
+        token, // Add this line
         login,
         register,
         logout,
