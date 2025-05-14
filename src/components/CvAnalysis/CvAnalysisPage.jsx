@@ -370,143 +370,134 @@ export default function CvAnalysisPage() {
                 </div>
               </motion.div>
             )}
-
             {/* Loading State */}
             {loading && (
               <motion.div
                 key="loading-state"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="mt-8 p-8 rounded-xl bg-white/80 backdrop-blur-sm shadow-lg"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="mt-8 p-8 rounded-2xl bg-gradient-to-br from-white/90 to-white/50 backdrop-blur-xl shadow-xl border border-blue-100/20"
               >
-                <div className="space-y-6">
-                  <div className="flex items-center justify-center space-x-4">
-                    <FiLoader className="h-6 w-6 text-blue-500 animate-spin" />
-                    <p className="text-lg text-gray-900">{progressText}</p>
+                <div className="space-y-8">
+                  {/* Enhanced loading indicator */}
+                  <div className="flex flex-col items-center justify-center space-y-4">
+                    <div className="relative">
+                      <div className="w-20 h-20 rounded-full border-4 border-blue-100 border-t-blue-500 animate-spin" />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <motion.div
+                          animate={{
+                            scale: [1, 1.2, 1],
+                            opacity: [0.5, 1, 0.5],
+                          }}
+                          transition={{
+                            duration: 2,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                          }}
+                        >
+                          <FiLoader className="h-8 w-8 text-blue-500" />
+                        </motion.div>
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <motion.p 
+                        className="text-xl font-semibold text-gray-900 mb-2"
+                        animate={{ opacity: [0.5, 1, 0.5] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                      >
+                        {progressText}
+                      </motion.p>
+                      <p className="text-sm text-gray-500">Please wait while we analyze your CV</p>
+                    </div>
                   </div>
 
-                  <div className="w-full bg-gray-100 rounded-full h-2.5">
+                  {/* Enhanced progress bar */}
+                  <div className="relative">
+                    <div className="w-full bg-gray-100/50 rounded-full h-3 overflow-hidden backdrop-blur-sm">
+                      <motion.div
+                        className="h-full rounded-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"
+                        initial={{ width: 0 }}
+                        animate={{ width: `${progress}%` }}
+                        transition={{ duration: 0.5 }}
+                        style={{
+                          boxShadow: '0 0 20px rgba(59, 130, 246, 0.5)'
+                        }}
+                      />
+                    </div>
+                    <motion.span 
+                      className="absolute right-0 -top-6 text-sm font-medium text-gray-500"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      {progress}%
+                    </motion.span>
+                  </div>
+
+                  {/* Enhanced footer */}
+                  <div className="flex items-center justify-center space-x-2 text-sm text-gray-500">
                     <motion.div
-                      className="h-2.5 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500"
-                      initial={{ width: 0 }}
-                      animate={{ width: `${progress}%` }}
-                      transition={{ duration: 0.5 }}
-                    />
+                      animate={{
+                        scale: [1, 1.2, 1],
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      }}
+                    >
+                      <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
+                        <path
+                          d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M12 6V12L16 14"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </motion.div>
+                    <span>Estimated time: ~2 minutes</span>
                   </div>
 
-                  <p className="text-center text-sm text-gray-500">
-                    This process may take up to 2 minutes to complete
-                  </p>
+                  {/* Processing steps */}
+                  <div className="grid grid-cols-3 gap-4 text-center text-xs">
+                    {['Scanning Document', 'Analyzing Content', 'Generating Report'].map((step, index) => (
+                      <motion.div
+                        key={step}
+                        initial={{ opacity: 0.5 }}
+                        animate={{ 
+                          opacity: progress > (index * 33) ? 1 : 0.5,
+                          scale: progress > (index * 33) ? 1.05 : 1
+                        }}
+                        className={`p-3 rounded-lg ${
+                          progress > (index * 33)
+                            ? 'bg-blue-50/50 text-blue-600'
+                            : 'bg-gray-50/50 text-gray-400'
+                        } backdrop-blur-sm transition-all duration-300`}
+                      >
+                        {step}
+                      </motion.div>
+                    ))}
+                  </div>
                 </div>
               </motion.div>
             )}
-
-            {/* Analysis Results */}
+            Analysis Results
             {analysis && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="mt-12 space-y-10"
               >
-                {/* Score Section with Enhanced Design */}
-                <motion.div 
-                  className="bg-gradient-to-br from-white/90 to-white/50 backdrop-blur-xl rounded-2xl p-10 shadow-xl border border-blue-100/20 relative overflow-hidden group"
-                  whileHover={{ scale: 1.02, boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.08)" }}
-                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                >
-                  {/* Decorative Elements */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-indigo-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="absolute -right-24 -top-24 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl group-hover:bg-blue-500/20 transition-colors duration-500" />
-                  <div className="absolute -left-24 -bottom-24 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl group-hover:bg-indigo-500/20 transition-colors duration-500" />
-
-                  <div className="relative z-10">
-                    <div className="flex items-center justify-between space-x-10">
-                      {/* Enhanced Score Circle */}
-                      <div className="relative">
-                        <svg className="w-40 h-40 transform transition-transform duration-1000 group-hover:rotate-180">
-                          <circle
-                            className="text-blue-50"
-                            strokeWidth="10"
-                            stroke="currentColor"
-                            fill="transparent"
-                            r="70"
-                            cx="80"
-                            cy="80"
-                          />
-                          <motion.circle
-                            className="text-blue-600"
-                            strokeWidth="10"
-                            strokeLinecap="round"
-                            stroke="url(#gradient)"
-                            fill="transparent"
-                            r="70"
-                            cx="80"
-                            cy="80"
-                            initial={{ strokeDashoffset: 440 }}
-                            animate={{ 
-                              strokeDashoffset: 440 - (440 * parseInt(typeof analysis === 'string' && analysis.includes("92-95%") ? "94" : "78")) / 100 
-                            }}
-                            strokeDasharray="440"
-                            transform="rotate(-90 80 80)"
-                          />
-                          <defs>
-                            <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                              <stop offset="0%" stopColor="#2563EB" />
-                              <stop offset="100%" stopColor="#4F46E5" />
-                            </linearGradient>
-                          </defs>
-                        </svg>
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="text-center">
-                            <motion.h2 
-                              className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600"
-                              initial={{ scale: 0.5, opacity: 0 }}
-                              animate={{ scale: 1, opacity: 1 }}
-                              transition={{ delay: 0.5, type: "spring" }}
-                            >
-                              {typeof analysis === 'string' && analysis.includes("92-95%") ? "94%" : "78%"}
-                            </motion.h2>
-                            <p className="text-sm font-medium text-gray-500 mt-1">Overall Score</p>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Enhanced Score Details */}
-                      <div className="flex-1 space-y-6">
-                        <div>
-                          <h3 className="text-2xl font-bold text-gray-900 mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
-                            ATS Matching Score
-                          </h3>
-                          <p className="text-base text-gray-600 leading-relaxed max-w-xl">
-                            {parseInt(typeof analysis === 'string' && analysis.includes("92-95%") ? "94" : "78") >= 90 
-                              ? "Excellent! Your CV is highly optimized for ATS systems. You're well-positioned to pass automated screenings."
-                              : "Good start! With some targeted improvements, you can significantly boost your ATS compatibility and increase your chances of getting noticed."}
-                          </p>
-                        </div>
-
-                        {/* Score Breakdown */}
-                        <div className="grid grid-cols-3 gap-4">
-                          <div className="p-4 rounded-xl bg-blue-50/50 border border-blue-100/50">
-                            <div className="text-blue-600 font-semibold">Keywords</div>
-                            <div className="text-2xl font-bold text-gray-900">92%</div>
-                          </div>
-                          <div className="p-4 rounded-xl bg-indigo-50/50 border border-indigo-100/50">
-                            <div className="text-indigo-600 font-semibold">Format</div>
-                            <div className="text-2xl font-bold text-gray-900">88%</div>
-                          </div>
-                          <div className="p-4 rounded-xl bg-purple-50/50 border border-purple-100/50">
-                            <div className="text-purple-600 font-semibold">Content</div>
-                            <div className="text-2xl font-bold text-gray-900">95%</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-
-                {/* Enhanced Analysis Sections */}
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                   {typeof analysis === "string" &&
                     analysis.split("\n\n").map((section, index) => {
                       if (section.startsWith("**")) {
@@ -516,48 +507,77 @@ export default function CvAnalysisPage() {
                             key={index}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: index * 0.1 }}
+                            transition={{ 
+                              delay: index * 0.1,
+                              type: "spring",
+                              stiffness: 100,
+                              damping: 15
+                            }}
                             className="group relative"
                           >
-                            <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-indigo-500/5 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-all duration-300" />
-                            <div className="relative bg-gradient-to-br from-white/90 to-white/50 backdrop-blur-xl rounded-xl p-6 shadow-lg border border-blue-100/20 h-full hover:shadow-xl transition-all duration-300">
-                              <div className="flex items-center gap-3 mb-4">
-                                {title.includes("Strengths") && (
-                                  <FiCheckCircle className="w-6 h-6 text-green-500" />
-                                )}
-                                {title.includes("Improve") && (
-                                  <FiTool className="w-6 h-6 text-amber-500" />
-                                )}
-                                {title.includes("Critical") && (
-                                  <FiAlertTriangle className="w-6 h-6 text-red-500" />
-                                )}
-                                {title.includes("Recommend") && (
-                                  <FiZap className="w-6 h-6 text-blue-500" />
-                                )}
-                                <h3 className="text-xl font-semibold text-gray-900">
-                                  {title}
-                                </h3>
+                            {/* Enhanced hover effect background */}
+                            <div className="absolute -inset-2 bg-gradient-to-r from-blue-500/10 via-indigo-500/10 to-purple-500/10 rounded-2xl blur-2xl opacity-0 group-hover:opacity-100 transition-all duration-500 transform group-hover:scale-105" />
+                            
+                            {/* Main content card with improved styling */}
+                            <div className="relative bg-gradient-to-br from-white/95 to-white/75 backdrop-blur-xl rounded-2xl p-8 shadow-lg border border-blue-100/20 h-full hover:shadow-2xl transition-all duration-300">
+                              {/* Enhanced header section */}
+                              <div className="flex items-center gap-4 mb-6">
+                                <div className="p-3 rounded-xl bg-gradient-to-br from-blue-50 to-indigo-50/50 group-hover:scale-110 transition-transform duration-300">
+                                  {title.includes("Strengths") && (
+                                    <FiCheckCircle className="w-7 h-7 text-green-500" />
+                                  )}
+                                  {title.includes("Improve") && (
+                                    <FiTool className="w-7 h-7 text-amber-500" />
+                                  )}
+                                  {title.includes("Critical") && (
+                                    <FiAlertTriangle className="w-7 h-7 text-red-500" />
+                                  )}
+                                  {title.includes("Recommend") && (
+                                    <FiZap className="w-7 h-7 text-blue-500" />
+                                  )}
+                                </div>
+                                <div>
+                                  <h3 className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600">
+                                    {title}
+                                  </h3>
+                                  <p className="text-sm text-gray-500 mt-1">
+                                    {title.includes("Strengths") && "What you're doing well"}
+                                    {title.includes("Improve") && "Areas for enhancement"}
+                                    {title.includes("Critical") && "Important fixes needed"}
+                                    {title.includes("Recommend") && "Suggested changes"}
+                                  </p>
+                                </div>
                               </div>
-                              <div className="prose prose-blue prose-sm max-w-none">
+
+                              {/* Enhanced content section */}
+                              <div className="prose prose-blue prose-lg max-w-none">
                                 {section
                                   .replace(/\*\*(.*?)\*\*/, "")
                                   .trim()
                                   .split("\n")
                                   .map((line, i) => (
-                                    <div key={i} className="mb-2">
+                                    <motion.div 
+                                      key={i} 
+                                      initial={{ opacity: 0, x: -10 }}
+                                      animate={{ opacity: 1, x: 0 }}
+                                      transition={{ delay: i * 0.05 }}
+                                      className="mb-4"
+                                    >
                                       {line.startsWith("- ") ? (
-                                        <div className="flex items-start gap-2">
-                                          <div className="mt-1.5">
-                                            <div className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                                        <div className="flex items-start gap-3 group/item hover:bg-blue-50/50 p-3 rounded-xl transition-all duration-200">
+                                          <div className="mt-2">
+                                            <div className="w-2 h-2 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 group-hover/item:scale-125 transition-transform duration-200" />
                                           </div>
-                                          <p className="text-gray-700">
+                                          <p className="text-gray-700 leading-relaxed">
                                             {line.replace("- ", "")}
                                           </p>
                                         </div>
                                       ) : (
-                                        <p className="text-gray-700">{line}</p>
+                                        <p className="text-gray-700 leading-relaxed px-3">
+                                          {line}
+                                        </p>
                                       )}
-                                    </div>
+                                    </motion.div>
                                   ))}
                               </div>
                             </div>
@@ -569,7 +589,6 @@ export default function CvAnalysisPage() {
                 </div>
               </motion.div>
             )}
-
             {/* Error Message */}
             {error && (
               <motion.div
