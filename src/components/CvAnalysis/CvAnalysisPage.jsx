@@ -256,27 +256,7 @@ export default function CvAnalysisPage() {
 
       <div className="pt-24 pb-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">
-          {/* Stats Section */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                className="relative group"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-indigo-500/10 rounded-xl blur opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                <div className="relative bg-white/80 backdrop-blur-sm p-6 rounded-xl shadow-sm border border-gray-100">
-                  <stat.icon className={`w-6 h-6 ${stat.color} mb-4`} />
-                  <p className="text-2xl font-bold text-gray-900">
-                    {stat.value}
-                  </p>
-                  <p className="text-sm text-gray-600">{stat.label}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+          
 
           {/* Enhanced Header Section */}
           <motion.div
