@@ -8,10 +8,14 @@ export default function LandingPage() {
       <Navbar />
       {/* Hero Section */}
       <div className="relative px-6 lg:px-8 overflow-hidden pt-16">
-        {/* Enhanced Gradient Blobs */}
+        {/* Enhanced Gradient Background */}
         <div className="absolute inset-0 -z-10">
           <div className="absolute right-1/2 bottom-0 -mb-8 -mr-96 w-[300px] h-[300px] transform-gpu blur-3xl bg-gradient-to-r from-blue-200/60 to-indigo-300/60 opacity-70 animate-blob"></div>
           <div className="absolute left-1/2 top-0 -ml-96 -mt-8 w-[300px] h-[300px] transform-gpu blur-3xl bg-gradient-to-r from-indigo-200/60 to-purple-300/60 opacity-70 animate-blob animation-delay-2000"></div>
+          {/* Simplified pattern background */}
+          <div className="absolute inset-0">
+            <div className="absolute inset-0 bg-[url('/pattern.svg')] bg-repeat opacity-20"></div>
+          </div>
         </div>
 
         <motion.div
@@ -66,25 +70,45 @@ export default function LandingPage() {
               professionals.
             </motion.p>
 
+            {/* Enhanced CTA Buttons */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8 }}
-              className="mt-10 flex gap-x-6 justify-center"
+              className="mt-10 flex flex-col sm:flex-row gap-4 justify-center items-center"
             >
               <Link
                 to="/register"
-                className="group relative rounded-full bg-blue-600 px-8 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 transition-all duration-300"
+                className="group relative rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 p-0.5 overflow-hidden"
               >
-                <span className="absolute inset-0 rounded-full bg-white/10 group-hover:scale-110 transition-transform duration-300"></span>
-                Analyze Your CV
+                <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-gradient-to-r from-blue-600 to-indigo-600" />
+                <span className="inline-flex h-full w-full items-center justify-center rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 px-8 py-3 text-sm font-semibold text-white backdrop-blur-3xl transition-all duration-300 group-hover:bg-transparent">
+                  Analyze Your CV
+                  <motion.span
+                    className="ml-2"
+                    animate={{ x: [0, 3, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                  >
+                    →
+                  </motion.span>
+                </span>
               </Link>
+
               <Link
                 to="/login"
-                className="group relative rounded-full bg-white/80 backdrop-blur-sm px-8 py-3 text-sm font-semibold text-gray-900 ring-1 ring-gray-200 hover:ring-gray-300 transition-all duration-300"
+                className="group relative rounded-full px-8 py-3 text-sm font-semibold backdrop-blur-sm transition-all duration-300"
               >
-                <span className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-50 to-indigo-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                Sign In
+                <span className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-50 to-indigo-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <span className="relative flex items-center justify-center text-gray-900">
+                  Sign In
+                  <motion.span
+                    className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    animate={{ x: [0, 3, 0] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                  >
+                    →
+                  </motion.span>
+                </span>
               </Link>
             </motion.div>
           </div>
@@ -579,7 +603,7 @@ const features = [
         viewBox="0 0 20 20"
         fill="currentColor"
       >
-        <path d="M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z" />
+        <path d="M5.433 13.917l1.262-3.155A4 4 0 007.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z" />
         <path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0010 3H4.75A2.75 2.75 0 002 5.75v9.5A2.75 2.75 0 004.75 18h9.5A2.75 2.75 0 0017 15.25V10a.75.75 0 00-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5z" />
       </svg>
     ),
