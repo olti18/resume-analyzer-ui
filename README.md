@@ -139,9 +139,6 @@ Contributions are welcome! Here are some guidelines:
 
 Please ensure that your code adheres to the existing code style and passes all tests.
 
-## License Information
-
-This project has no specified license. All rights are reserved by the owner.
 
 ## Acknowledgments
 
