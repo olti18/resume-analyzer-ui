@@ -11,6 +11,7 @@ import {
   FiFileText,
   FiPlus,
   FiTrash2,
+  FiSave,
 } from "react-icons/fi";
 
 export default function CvManager() {
@@ -24,6 +25,7 @@ export default function CvManager() {
     summary: "",
     experiences: [{ position: "", company: "", years: "" }],
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -33,6 +35,7 @@ export default function CvManager() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     try {
       if (!isAuthenticated || !token) {
         throw new Error("Authentication required");
@@ -68,6 +71,8 @@ export default function CvManager() {
     } catch (error) {
       console.error("API Error:", error);
       toast.error(error.message || "Failed to save CV");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -103,26 +108,27 @@ export default function CvManager() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-2xl shadow-xl p-6 sm:p-8"
-        >
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="max-w-4xl mx-auto"
+      >
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-6 sm:p-8 border border-gray-100">
           <div className="mb-8">
-            <h2 className="text-3xl font-bold text-gray-900">
-              Create New Resume
-            </h2>
+            <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
+              Create Your Resume
+            </h1>
             <p className="mt-2 text-gray-600">
-              Fill in your resume details below
+              Fill in your professional details below
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Basic Information */}
+          <form onSubmit={handleSubmit} className="space-y-8">
+            {/* Personal Information Section */}
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
+              <div className="relative">
+                <label className="flex items-center text-sm font-medium text-gray-700 mb-1">
+                  <FiUser className="w-4 h-4 mr-2 text-blue-500" />
                   Full Name
                 </label>
                 <input
@@ -131,13 +137,14 @@ export default function CvManager() {
                   onChange={(e) =>
                     setFormData({ ...formData, fullname: e.target.value })
                   }
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  className="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   required
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
+              <div className="relative">
+                <label className="flex items-center text-sm font-medium text-gray-700 mb-1">
+                  <FiMail className="w-4 h-4 mr-2 text-blue-500" />
                   Email
                 </label>
                 <input
@@ -146,13 +153,14 @@ export default function CvManager() {
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
                   }
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  className="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   required
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
+              <div className="relative">
+                <label className="flex items-center text-sm font-medium text-gray-700 mb-1">
+                  <FiPhone className="w-4 h-4 mr-2 text-blue-500" />
                   Phone Number
                 </label>
                 <input
@@ -161,13 +169,14 @@ export default function CvManager() {
                   onChange={(e) =>
                     setFormData({ ...formData, phoneNumber: e.target.value })
                   }
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  className="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   required
                 />
               </div>
 
-              <div>
-                <label className="block text-sm font-medium text-gray-700">
+              <div className="relative">
+                <label className="flex items-center text-sm font-medium text-gray-700 mb-1">
+                  <FiBriefcase className="w-4 h-4 mr-2 text-blue-500" />
                   Job Title
                 </label>
                 <input
@@ -176,15 +185,16 @@ export default function CvManager() {
                   onChange={(e) =>
                     setFormData({ ...formData, jobTitle: e.target.value })
                   }
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                  className="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   required
                 />
               </div>
             </div>
 
-            {/* Summary */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
+            {/* Summary Section */}
+            <div className="relative">
+              <label className="flex items-center text-sm font-medium text-gray-700 mb-1">
+                <FiFileText className="w-4 h-4 mr-2 text-blue-500" />
                 Professional Summary
               </label>
               <textarea
@@ -193,24 +203,27 @@ export default function CvManager() {
                   setFormData({ ...formData, summary: e.target.value })
                 }
                 rows={4}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                className="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 required
               />
             </div>
 
-            {/* Experiences */}
+            {/* Experience Section */}
             <div className="space-y-4">
               <div className="flex justify-between items-center">
-                <h3 className="text-lg font-medium text-gray-900">
+                <h2 className="text-xl font-semibold text-gray-900">
                   Work Experience
-                </h3>
-                <button
+                </h2>
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   type="button"
                   onClick={addExperience}
-                  className="text-blue-600 hover:text-blue-700"
+                  className="flex items-center px-3 py-2 text-sm font-medium text-blue-600 hover:text-blue-700"
                 >
-                  + Add Experience
-                </button>
+                  <FiPlus className="w-4 h-4 mr-1" />
+                  Add Experience
+                </motion.button>
               </div>
 
               {formData.experiences.map((exp, index) => (
@@ -218,97 +231,110 @@ export default function CvManager() {
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="grid grid-cols-1 gap-4 sm:grid-cols-3 bg-gray-50 p-4 rounded-lg relative"
+                  className="p-4 bg-gray-50 rounded-lg relative"
                 >
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Position
-                    </label>
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
                     <input
                       type="text"
                       value={exp.position}
-                      onChange={(e) =>
-                        handleExperienceChange(
-                          index,
-                          "position",
-                          e.target.value
-                        )
-                      }
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                      onChange={(e) => {
+                        const newExperiences = [...formData.experiences];
+                        newExperiences[index].position = e.target.value;
+                        setFormData({ ...formData, experiences: newExperiences });
+                      }}
+                      placeholder="Position"
+                      className="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       required
                     />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Company
-                    </label>
                     <input
                       type="text"
                       value={exp.company}
-                      onChange={(e) =>
-                        handleExperienceChange(index, "company", e.target.value)
-                      }
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                      onChange={(e) => {
+                        const newExperiences = [...formData.experiences];
+                        newExperiences[index].company = e.target.value;
+                        setFormData({ ...formData, experiences: newExperiences });
+                      }}
+                      placeholder="Company"
+                      className="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       required
                     />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Years
-                    </label>
                     <input
                       type="text"
                       value={exp.years}
-                      onChange={(e) =>
-                        handleExperienceChange(index, "years", e.target.value)
-                      }
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                      onChange={(e) => {
+                        const newExperiences = [...formData.experiences];
+                        newExperiences[index].years = e.target.value;
+                        setFormData({ ...formData, experiences: newExperiences });
+                      }}
+                      placeholder="Years (e.g., 2020-2023)"
+                      className="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       required
-                      placeholder="e.g., 2020-2023"
                     />
                   </div>
-
                   {index > 0 && (
-                    <button
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
                       type="button"
-                      onClick={() => removeExperience(index)}
-                      className="absolute -top-2 -right-2 bg-red-100 text-red-600 rounded-full p-1 hover:bg-red-200"
+                      onClick={() => {
+                        const newExperiences = formData.experiences.filter(
+                          (_, i) => i !== index
+                        );
+                        setFormData({ ...formData, experiences: newExperiences });
+                      }}
+                      className="absolute -top-2 -right-2 p-1 bg-red-100 text-red-600 rounded-full hover:bg-red-200"
                     >
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
-                    </button>
+                      <FiTrash2 className="w-4 h-4" />
+                    </motion.button>
                   )}
                 </motion.div>
               ))}
             </div>
 
             {/* Submit Button */}
-            <div className="flex justify-end">
+            <div className="flex justify-end pt-6">
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 type="submit"
-                className="px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-md hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={isSubmitting}
+                className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg font-medium shadow-lg hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
               >
-                Create Resume
+                {isSubmitting ? (
+                  <>
+                    <svg
+                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    Creating Resume...
+                  </>
+                ) : (
+                  <>
+                    <FiSave className="w-5 h-5 mr-2" />
+                    Create Resume
+                  </>
+                )}
               </motion.button>
             </div>
           </form>
-        </motion.div>
-      </div>
+        </div>
+      </motion.div>
     </div>
   );
 }
