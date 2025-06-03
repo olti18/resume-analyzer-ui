@@ -1,4 +1,4 @@
-# Resume Analyzer UI
+# Resume Analyzer UI screenshots below ⬇️⬇️⬇️⬇️
 
 This project is a React-based user interface for a resume analyzer application. It provides a platform for users to upload their resumes and receive feedback and analysis based on various criteria. While the original description was missing, this README provides a comprehensive overview based on the project structure and included files.
 
@@ -137,6 +137,7 @@ Contributions are welcome! Here are some guidelines:
 4. Test your changes thoroughly.
 5. Submit a pull request.
 
+
 Please ensure that your code adheres to the existing code style and passes all tests.
 
 
@@ -145,4 +146,7 @@ Please ensure that your code adheres to the existing code style and passes all t
 - React
 - Tailwind CSS
 - Vite
- 
+
+##SCREENSHOTS
+ ![CV-analyzer](https://github.com/user-attachments/assets/70cae55e-1ffc-497d-87e4-a07ffa4b25e5)
+![Landing Page](https://github.com/user-attachments/assets/ffc66f70-462e-49df-b6f7-56ae687465c4)
