@@ -10,6 +10,8 @@ import RegisterForm from "./components/Auth/RegisterForm";
 import CvAnalysisPage from "./components/CvAnalysis/CvAnalysisPage";
 import LandingPage from "./components/LandingPage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { Toaster } from 'react-hot-toast';
+import CvManager from './components/CvManager';
 
 import "./App.css";
 
@@ -17,6 +19,7 @@ function App() {
   return (
     <AuthProvider>
       <Router>
+        <Toaster position="top-right" />
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<LandingPage />} />
@@ -32,6 +35,7 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/manage-cv" element={<CvManager />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>
