@@ -20,6 +20,7 @@ function App() {
   return (
     <AuthProvider>
       <Router>
+         <SpeedInsights /> {/* Moved inside Router */}
         <Toaster position="top-right" />
         <Routes>
           {/* Public Routes */}
