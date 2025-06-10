@@ -4,6 +4,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
+import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { AuthProvider } from "./context/AuthContext";
 import LoginForm from "./components/Auth/LoginForm";
@@ -21,6 +22,7 @@ function App() {
     <AuthProvider>
       <Router>
         <Toaster position="top-right" />
+        <Analytics/>
         <SpeedInsights /> {/* Moved inside Router */}
         <Routes>
           {/* Public Routes */}
