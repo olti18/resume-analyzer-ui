@@ -4,7 +4,7 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import { AuthProvider } from "./context/AuthContext";
 import LoginForm from "./components/Auth/LoginForm";
 import RegisterForm from "./components/Auth/RegisterForm";
@@ -20,8 +20,8 @@ function App() {
   return (
     <AuthProvider>
       <Router>
-         <SpeedInsights /> {/* Moved inside Router */}
         <Toaster position="top-right" />
+        <SpeedInsights /> {/* Moved inside Router */}
         <Routes>
           {/* Public Routes */}
           <Route path="/" element={<LandingPage />} />
