@@ -240,7 +240,10 @@ export default function CvManager() {
                       onChange={(e) => {
                         const newExperiences = [...formData.experiences];
                         newExperiences[index].position = e.target.value;
-                        setFormData({ ...formData, experiences: newExperiences });
+                        setFormData({
+                          ...formData,
+                          experiences: newExperiences,
+                        });
                       }}
                       placeholder="Position"
                       className="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -252,7 +255,10 @@ export default function CvManager() {
                       onChange={(e) => {
                         const newExperiences = [...formData.experiences];
                         newExperiences[index].company = e.target.value;
-                        setFormData({ ...formData, experiences: newExperiences });
+                        setFormData({
+                          ...formData,
+                          experiences: newExperiences,
+                        });
                       }}
                       placeholder="Company"
                       className="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -264,7 +270,10 @@ export default function CvManager() {
                       onChange={(e) => {
                         const newExperiences = [...formData.experiences];
                         newExperiences[index].years = e.target.value;
-                        setFormData({ ...formData, experiences: newExperiences });
+                        setFormData({
+                          ...formData,
+                          experiences: newExperiences,
+                        });
                       }}
                       placeholder="Years (e.g., 2020-2023)"
                       className="block w-full rounded-lg border-gray-300 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -280,7 +289,10 @@ export default function CvManager() {
                         const newExperiences = formData.experiences.filter(
                           (_, i) => i !== index
                         );
-                        setFormData({ ...formData, experiences: newExperiences });
+                        setFormData({
+                          ...formData,
+                          experiences: newExperiences,
+                        });
                       }}
                       className="absolute -top-2 -right-2 p-1 bg-red-100 text-red-600 rounded-full hover:bg-red-200"
                     >
