@@ -1,2 +1,21 @@
-
 @import "tailwindcss";
+
+@tailwind utilities;
+
+@layer components {
+  .stat-card {
+    @apply relative overflow-hidden rounded-2xl bg-white/80 p-8 backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:shadow-xl;
+  }
+
+  .feature-card {
+    @apply relative overflow-hidden rounded-xl p-6 bg-white/90 backdrop-blur-sm transition-all duration-300 hover:shadow-lg hover:bg-gradient-to-br hover:from-blue-50 hover:to-indigo-50;
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600;
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}

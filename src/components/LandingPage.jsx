@@ -1,73 +1,65 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
+import { TypeAnimation } from "react-type-animation";
+import {
+  FiBriefcase,
+  FiSearch,
+  FiTrendingUp,
+  FiTarget,
+  FiBell,
+  FiClipboard,
+} from "react-icons/fi";
 
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-200/60 via-white to-indigo-150/60">
       <Navbar />
       {/* Hero Section */}
-      <div className="relative px-6 lg:px-8 overflow-hidden pt-16">
+      <div className="hero-section relative">
         {/* Enhanced Gradient Background */}
         <div className="absolute inset-0 -z-10">
-          <div className="absolute right-1/2 bottom-0 -mb-8 -mr-96 w-[300px] h-[300px] transform-gpu blur-3xl bg-gradient-to-r from-blue-200/60 to-indigo-300/60 opacity-70 animate-blob"></div>
-          <div className="absolute left-1/2 top-0 -ml-96 -mt-8 w-[300px] h-[300px] transform-gpu blur-3xl bg-gradient-to-r from-indigo-200/60 to-purple-300/60 opacity-70 animate-blob animation-delay-2000"></div>
-          {/* Simplified pattern background */}
-          <div className="absolute inset-0">
-            <div className="absolute inset-0 bg-[url('/pattern.svg')] bg-repeat opacity-20"></div>
-          </div>
+          <div className="absolute right-1/2 bottom-0 -mb-8 -mr-96 w-[400px] h-[400px] transform-gpu blur-[120px] bg-gradient-to-r from-blue-200/60 to-indigo-300/60 opacity-70 animate-blob"></div>
+          <div className="absolute left-1/2 top-0 -ml-96 -mt-8 w-[400px] h-[400px] transform-gpu blur-[120px] bg-gradient-to-r from-indigo-200/60 to-blue-300/60 opacity-70 animate-blob animation-delay-2000"></div>
+          <div className="absolute bottom-0 left-1/2 w-[400px] h-[400px] transform-gpu blur-[120px] bg-gradient-to-r from-blue-200/60 to-white/60 opacity-70 animate-blob animation-delay-4000"></div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="mx-auto max-w-7xl pt-20 pb-32"
-        >
-          <div className="text-center relative">
-            {/* Decorative elements */}
-            <div className="absolute inset-0 -z-10">
-              <div className="absolute right-1/2 bottom-0 -mb-8 -mr-96 w-[200px] h-[200px] transform-gpu blur-3xl bg-gradient-to-r from-blue-100 to-indigo-200 opacity-50"></div>
-              <div className="absolute left-1/2 top-0 -ml-96 -mt-8 w-[200px] h-[200px] transform-gpu blur-3xl bg-gradient-to-r from-indigo-100 to-purple-200 opacity-50"></div>
+        {/* Enhanced Hero Content */}
+        <div className="relative pt-24 pb-32 px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center max-w-3xl mx-auto"
+          >
+            <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/80 backdrop-blur-sm border border-blue-100 shadow-lg shadow-blue-100/20">
+              <span className="animate-pulse h-2 w-2 rounded-full bg-blue-600"></span>
+              <span className="ml-2 text-sm font-medium bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                Powered by Advanced AI
+              </span>
             </div>
 
-            <motion.span
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 }}
-              className="inline-flex items-center rounded-full bg-blue-100/80 px-3 py-1 text-xs font-medium text-blue-700 ring-1 ring-inset ring-blue-700/10 mb-6 backdrop-blur-sm"
-            >
-              <span className="flex items-center gap-x-1.5">
-                <svg
-                  className="h-1.5 w-1.5 fill-blue-500"
-                  viewBox="0 0 6 6"
-                  aria-hidden="true"
-                >
-                  <circle cx="3" cy="3" r="3" />
-                </svg>
-                Thesis-Level Analysis
-              </span>
-            </motion.span>
-
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="text-5xl font-bold tracking-tight text-gray-900 sm:text-6xl bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600"
-            >
-              Academic Resume Analysis with
-              <span className="block mt-2">Advanced AI Intelligence</span>
+            <motion.h1 className="text-6xl font-bold tracking-tight sm:text-7xl bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600">
+              Your Career Success
+              <span className="block mt-2">Starts Here</span>
             </motion.h1>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              className="mt-6 text-lg leading-8 text-gray-600 max-w-2xl mx-auto"
-            >
-              Enhance your academic CV with our specialized AI analysis tool.
-              Perfect for researchers, PhD candidates, and academic
-              professionals.
+            <TypeAnimation
+              sequence={[
+                "Find Your Perfect Job Match",
+                2000,
+                "Optimize Your CV",
+                2000,
+                "Track Your Applications",
+                2000,
+              ]}
+              wrapper="span"
+              className="block mt-6 text-2xl text-gray-600 font-medium"
+              repeat={Infinity}
+            />
+
+            <motion.p className="mt-6 text-xl leading-8 text-gray-600 max-w-2xl mx-auto">
+              Experience the future of job hunting. Our AI analyzes your CV, matches you with ideal
+              positions, and guides you to career success with personalized recommendations.
             </motion.p>
 
             {/* Enhanced CTA Buttons */}
@@ -111,46 +103,79 @@ export default function LandingPage() {
                 </span>
               </Link>
             </motion.div>
-          </div>
-        </motion.div>
+          </motion.div>
+        </div>
       </div>
 
       {/* Statistics Section */}
-      <div className="relative overflow-hidden">
-        {/* Enhanced Statistics Background */}
+      <div className="relative overflow-hidden py-20">
+        {/* Background Effects */}
         <div className="absolute inset-0 -z-10">
-          <div className="absolute right-1/2 bottom-0 -mb-8 -mr-96 w-[400px] h-[400px] transform-gpu blur-3xl bg-gradient-to-r from-blue-200/60 to-indigo-300/60 opacity-70 animate-blob"></div>
-          <div className="absolute left-1/2 top-0 -ml-96 -mt-8 w-[400px] h-[400px] transform-gpu blur-3xl bg-gradient-to-r from-indigo-200/60 to-purple-300/60 opacity-70 animate-blob animation-delay-4000"></div>
+          <div className="absolute right-1/2 bottom-0 w-[400px] h-[400px] transform-gpu blur-3xl bg-gradient-to-r from-blue-200/60 to-indigo-300/60 opacity-70 animate-blob"></div>
+          <div className="absolute left-1/2 top-0 w-[400px] h-[400px] transform-gpu blur-3xl bg-gradient-to-r from-indigo-200/60 to-purple-300/60 opacity-70 animate-blob animation-delay-4000"></div>
         </div>
 
-        <div className="mx-auto max-w-7xl px-6 lg:px-8 py-16">
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
             className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4"
           >
-            {stats.map((stat, index) => (
+            {[
+              {
+                name: "Job Matches Daily",
+                value: "5K+",
+                description: "New opportunities matched",
+                icon: <FiBriefcase className="w-6 h-6" />
+              },
+              {
+                name: "Success Rate",
+                value: "94%",
+                description: "Placement success",
+                icon: <FiTrendingUp className="w-6 h-6" />
+              },
+              {
+                name: "Available Jobs",
+                value: "100K+",
+                description: "Active positions",
+                icon: <FiSearch className="w-6 h-6" />
+              },
+              {
+                name: "CV Score Improvement",
+                value: "85%",
+                description: "Average increase",
+                icon: <FiTarget className="w-6 h-6" />
+              }
+            ].map((stat, index) => (
               <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.2 * index }}
                 key={stat.name}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ delay: index * 0.1 }}
                 className="relative group"
               >
-                <div className="absolute -inset-2 rounded-xl bg-gradient-to-r from-blue-500/50 to-indigo-500/50 opacity-0 group-hover:opacity-20 transition-all duration-500 blur-xl"></div>
-                <div className="relative bg-white/60 backdrop-blur-xl rounded-xl p-8 text-center shadow-lg ring-1 ring-gray-900/10 group-hover:shadow-2xl group-hover:bg-white/70 transition-all duration-300">
-                  <dt className="text-base font-medium text-gray-700 group-hover:text-blue-600 transition-colors">
+                <div className="absolute -inset-4 rounded-xl bg-gradient-to-r from-blue-100/50 to-indigo-100/50 opacity-0 group-hover:opacity-100 transition-all duration-500 blur-xl"></div>
+                <div className="relative bg-white/60 backdrop-blur-xl rounded-xl p-8 shadow-lg ring-1 ring-gray-900/5 group-hover:shadow-2xl group-hover:bg-white/90 transition-all duration-300">
+                  <div className="flex items-center justify-center mb-4">
+                    <div className="p-3 rounded-lg bg-blue-50 text-blue-600 group-hover:scale-110 transition-transform duration-300">
+                      {stat.icon}
+                    </div>
+                  </div>
+                  <dt className="text-base font-medium text-gray-900 text-center">
                     {stat.name}
                   </dt>
                   <motion.dd
                     initial={{ scale: 1 }}
                     whileHover={{ scale: 1.1 }}
                     transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                    className="mt-3 text-4xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600"
+                    className="mt-2 text-4xl font-bold tracking-tight text-center bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent"
                   >
                     {stat.value}
                   </motion.dd>
+                  <dd className="mt-2 text-sm text-gray-500 text-center">
+                    {stat.description}
+                  </dd>
                 </div>
               </motion.div>
             ))}
@@ -226,42 +251,57 @@ export default function LandingPage() {
               </motion.div>
             </div>
 
-            {/* Text Content */}
+            {/* Enhanced Text Content */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="space-y-6"
+              className="space-y-8"
             >
-              <h2 className="text-4xl font-bold tracking-tight text-gray-900">
-                Get an ATS understanding check
-              </h2>
-              <p className="text-lg text-gray-600">
-                Part of the resume checker score we assign is based on the
-                parsability rate of your resume. We've reverse-engineered the
-                most popular applicant tracking systems currently used and we
-                look for signs of ATS compatibility.
-              </p>
-              <p className="text-lg text-gray-600">
-                For each resume uploaded, we look for skills and keywords
-                connected to the job and industry you're applying for, readable
-                contact information, file type, and length. Then, we'll give you
-                suggestions on how to improve your resume.
-              </p>
-              <div className="flex gap-4 pt-4">
+              <div className="space-y-4">
+                <span className="inline-flex items-center rounded-full bg-blue-100/80 px-3 py-1 text-sm font-medium text-blue-700">
+                  <span className="mr-2">✨</span>
+                  AI-Powered Analysis
+                </span>
+                <h2 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">
+                  Smart Job Matching & CV Analysis
+                </h2>
+              </div>
+
+              <div className="prose prose-lg text-gray-600 space-y-4">
+                <p className="leading-relaxed">
+                  Our advanced AI technology creates your professional fingerprint by analyzing your CV's unique
+                  attributes, then matches you with opportunities that align perfectly with your profile.
+                </p>
+                <p className="leading-relaxed">
+                  For each potential match, we provide tailored insights and specific recommendations
+                  to optimize your CV, ensuring you present your most compelling case to employers.
+                </p>
+              </div>
+
+              <div className="flex flex-wrap gap-4">
                 <motion.div
                   whileHover={{ scale: 1.05 }}
-                  className="inline-flex items-center rounded-full bg-blue-100/80 px-3 py-1 text-sm font-medium text-blue-700"
+                  className="flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow-sm border border-blue-100"
                 >
-                  <span className="mr-2">•</span>
-                  Keywords Analysis
+                  <div className="h-2 w-2 rounded-full bg-blue-500"></div>
+                  <span className="text-sm font-medium text-gray-700">Smart Keyword Analysis</span>
                 </motion.div>
+                
                 <motion.div
                   whileHover={{ scale: 1.05 }}
-                  className="inline-flex items-center rounded-full bg-indigo-100/80 px-3 py-1 text-sm font-medium text-indigo-700"
+                  className="flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow-sm border border-blue-100"
                 >
-                  <span className="mr-2">•</span>
-                  Skills Check
+                  <div className="h-2 w-2 rounded-full bg-indigo-500"></div>
+                  <span className="text-sm font-medium text-gray-700">Skills Assessment</span>
+                </motion.div>
+                
+                <motion.div
+                  whileHover={{ scale: 1.05 }}
+                  className="flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow-sm border border-blue-100"
+                >
+                  <div className="h-2 w-2 rounded-full bg-purple-500"></div>
+                  <span className="text-sm font-medium text-gray-700">Match Score</span>
                 </motion.div>
               </div>
             </motion.div>
@@ -270,150 +310,80 @@ export default function LandingPage() {
       </div>
 
       {/* Modern Features Grid */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 py-24 sm:py-32">
-        <div className="mx-auto max-w-2xl px-6 lg:max-w-7xl lg:px-8">
+      <div className="bg-gradient-to-r from-blue-50/80 to-indigo-50/80 py-24 sm:py-32 relative overflow-hidden">
+        {/* Background Effects */}
+        <div className="absolute inset-0 -z-10">
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-200/30 rounded-full mix-blend-multiply filter blur-[128px] animate-blob" />
+          <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-200/30 rounded-full mix-blend-multiply filter blur-[128px] animate-blob animation-delay-2000" />
+        </div>
+                  
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
+            className="text-center max-w-2xl mx-auto mb-16"
           >
-            <h2 className="text-center text-base/7 font-semibold text-blue-600">
+            <h2 className="text-base font-semibold leading-7 text-blue-600">
               Advanced Features
             </h2>
-            <p className="mx-auto mt-2 max-w-lg text-center text-4xl font-semibold tracking-tight text-balance text-gray-900 sm:text-5xl">
-              Everything you need for your resume
+            <p className="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+              Elevate Your Career Journey
+            </p>
+            <p className="mt-4 text-lg leading-8 text-gray-600">
+              Our comprehensive suite of tools helps you build a stronger career path
             </p>
           </motion.div>
 
-          <div className="mt-10 grid gap-4 sm:mt-16 lg:grid-cols-3 lg:grid-rows-2">
-            {/* Resume Analysis Card */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="relative lg:row-span-2"
-            >
-              <div className="absolute inset-px rounded-lg bg-white/90 backdrop-blur-sm lg:rounded-l-[2rem]"></div>
-              <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(1.5rem+1px)] lg:rounded-l-[calc(2rem+1px)]">
-                <div className="px-8 pt-8 pb-3 sm:px-10 sm:pt-10 sm:pb-0">
-                  <p className="mt-2 text-lg font-medium tracking-tight text-gray-900 max-lg:text-center">
-                    Resume Analysis
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {features.map((feature, index) => (
+              <motion.div
+                key={feature.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.2 }}
+                className="relative group rounded-2xl overflow-hidden"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-100/50 to-indigo-100/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="relative bg-white/80 backdrop-blur-sm p-8 h-full border border-blue-100/20 shadow-lg hover:shadow-xl transition-shadow duration-300">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="p-3 rounded-xl bg-blue-50 text-blue-600 group-hover:scale-110 transition-transform duration-300">
+                      {feature.icon}
+                    </div>
+                    <h3 className="text-xl font-semibold text-gray-900">
+                      {feature.name}
+                    </h3>
+                  </div>
+                  <p className="text-gray-600 leading-relaxed">
+                    {feature.description}
                   </p>
-                  <p className="mt-2 max-w-lg text-sm/6 text-gray-600 max-lg:text-center">
-                    Our AI-powered system analyzes every aspect of your resume
-                    in real-time, providing detailed feedback for improvement.
-                  </p>
-                </div>
-                <div className="@container relative min-h-[30rem] w-full grow max-lg:mx-auto max-lg:max-w-sm">
-                  <div className="absolute inset-x-10 top-10 bottom-0 overflow-hidden rounded-t-[12cqw] border-x-[3cqw] border-t-[3cqw] border-gray-700 bg-gray-900 shadow-2xl">
-                    <img
-                      className="size-full object-cover object-top"
-                      src="https://tailwindcss.com/plus-assets/img/component-images/bento-03-mobile-friendly.png"
-                      alt="Resume Analysis Interface"
-                    />
+                  <div className="mt-6 flex items-center gap-2 text-blue-600 group-hover:text-blue-700 transition-colors">
+                    <span className="text-sm font-medium">Learn more</span>
+                    <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" viewBox="0 0 16 16" fill="none">
+                      <path d="M6.75 3.25L10.25 8L6.75 12.75" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
                   </div>
                 </div>
-              </div>
-              <div className="pointer-events-none absolute inset-px rounded-lg shadow-sm ring-1 ring-black/5 lg:rounded-l-[2rem]"></div>
-            </motion.div>
-
-            {/* ATS Optimization Card */}
-            <motion.div
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="relative max-lg:row-start-1"
-            >
-              <div className="absolute inset-px rounded-lg bg-white/90 backdrop-blur-sm max-lg:rounded-t-[2rem]"></div>
-              <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(1.5rem+1px)] max-lg:rounded-t-[calc(2rem+1px)]">
-                <div className="px-8 pt-8 sm:px-10 sm:pt-10">
-                  <p className="mt-2 text-lg font-medium tracking-tight text-gray-900 max-lg:text-center">
-                    ATS Optimization
-                  </p>
-                  <p className="mt-2 max-w-lg text-sm/6 text-gray-600 max-lg:text-center">
-                    Ensure your resume passes through ATS systems with our
-                    advanced keyword analysis and formatting suggestions.
-                  </p>
-                </div>
-                <div className="flex flex-1 items-center justify-center px-8 max-lg:pt-10 max-lg:pb-12 sm:px-10 lg:pb-2">
-                  <img
-                    className="w-full max-lg:max-w-xs"
-                    src="https://tailwindcss.com/plus-assets/img/component-images/bento-03-performance.png"
-                    alt="ATS Performance Graph"
-                  />
-                </div>
-              </div>
-              <div className="pointer-events-none absolute inset-px rounded-lg shadow-sm ring-1 ring-black/5 max-lg:rounded-t-[2rem]"></div>
-            </motion.div>
-
-            {/* Skills Analysis Card */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="relative max-lg:row-start-3 lg:col-start-2 lg:row-start-2"
-            >
-              <div className="absolute inset-px rounded-lg bg-white/90 backdrop-blur-sm"></div>
-              <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(1.5rem+1px)]">
-                <div className="px-8 pt-8 sm:px-10 sm:pt-10">
-                  <p className="mt-2 text-lg font-medium tracking-tight text-gray-900 max-lg:text-center">
-                    Skills Analysis
-                  </p>
-                  <p className="mt-2 max-w-lg text-sm/6 text-gray-600 max-lg:text-center">
-                    In-depth analysis of your skills and experience, matched
-                    against job market requirements.
-                  </p>
-                </div>
-                <div className="@container flex flex-1 items-center max-lg:py-6 lg:pb-2">
-                  <img
-                    className="h-[min(152px,40cqw)] object-cover"
-                    src="https://tailwindcss.com/plus-assets/img/component-images/bento-03-security.png"
-                    alt="Skills Analysis Chart"
-                  />
-                </div>
-              </div>
-              <div className="pointer-events-none absolute inset-px rounded-lg shadow-sm ring-1 ring-black/5"></div>
-            </motion.div>
-
-            {/* AI Suggestions Card */}
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              className="relative lg:row-span-2"
-            >
-              <div className="absolute inset-px rounded-lg bg-white/90 backdrop-blur-sm max-lg:rounded-b-[2rem] lg:rounded-r-[2rem]"></div>
-              <div className="relative flex h-full flex-col overflow-hidden rounded-[calc(1.5rem+1px)] max-lg:rounded-b-[calc(2rem+1px)] lg:rounded-r-[calc(2rem+1px)]">
-                <div className="px-8 pt-8 pb-3 sm:px-10 sm:pt-10 sm:pb-0">
-                  <p className="mt-2 text-lg font-medium tracking-tight text-gray-900 max-lg:text-center">
-                    AI Suggestions
-                  </p>
-                  <p className="mt-2 max-w-lg text-sm/6 text-gray-600 max-lg:text-center">
-                    Get intelligent suggestions for improving your resume
-                    content, structure, and formatting.
-                  </p>
-                </div>
-                <div className="relative min-h-[30rem] w-full grow">
-                  <div className="absolute top-10 right-0 bottom-0 left-10 overflow-hidden rounded-tl-xl bg-gray-900 shadow-2xl">
-                    <div className="flex bg-gray-800/40 ring-1 ring-white/5">
-                      <div className="-mb-px flex text-sm/6 font-medium text-gray-400">
-                        <div className="border-r border-b border-r-white/10 border-b-white/20 bg-white/5 px-4 py-2 text-white">
-                          AI Suggestions
-                        </div>
-                        <div className="border-r border-gray-600/10 px-4 py-2">
-                          Resume.pdf
-                        </div>
-                      </div>
-                    </div>
-                    <div className="px-6 pt-6 pb-14">
-                      {/* Add your code example or content here */}
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="pointer-events-none absolute inset-px rounded-lg shadow-sm ring-1 ring-black/5 max-lg:rounded-b-[2rem] lg:rounded-r-[2rem]"></div>
-            </motion.div>
+              </motion.div>
+            ))}
           </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            className="mt-16 text-center"
+          >
+            <Link
+              to="/register"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold shadow-lg shadow-blue-500/25 hover:shadow-xl hover:scale-105 transition-all duration-300"
+            >
+              Get Started Free
+              <svg className="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clipRule="evenodd" />
+              </svg>
+            </Link>
+          </motion.div>
         </div>
       </div>
 
@@ -580,68 +550,106 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
+
+      {/* Floating Elements */}
+      <FloatingElements />
     </div>
   );
 }
 
 const stats = [
-  { name: "Active Users", value: "10K+" },
-  { name: "Resumes Analyzed", value: "50K+" },
-  { name: "Success Rate", value: "95%" },
-  { name: "AI Suggestions", value: "1M+" },
+  {
+    name: "Job Matches Daily",
+    value: "5K+",
+    description: "New opportunities matched to candidates",
+  },
+  {
+    name: "Success Rate",
+    value: "94%",
+    description: "Of users find relevant positions",
+  },
+  {
+    name: "Available Jobs",
+    value: "100K+",
+    description: "Active positions in our database",
+  },
+  {
+    name: "CV Score Improvement",
+    value: "85%",
+    description: "Average increase in CV quality",
+  },
 ];
 
-// Keep only the features array
+// Update the features array
 const features = [
   {
-    name: "AI-Powered Analysis",
+    name: "AI-Powered Job Matching",
     description:
-      "Our advanced AI algorithms analyze your resume content, format, and keywords to provide comprehensive feedback.",
-    icon: (
-      <svg
-        className="h-5 w-5 text-blue-600"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-      >
-        <path d="M5.433 13.917l1.262-3.155A4 4 0 007.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z" />
-        <path d="M3.5 5.75c0-.69.56-1.25 1.25-1.25H10A.75.75 0 0010 3H4.75A2.75 2.75 0 002 5.75v9.5A2.75 2.75 0 004.75 18h9.5A2.75 2.75 0 0017 15.25V10a.75.75 0 00-1.5 0v5.25c0 .69-.56 1.25-1.25 1.25h-9.5c-.69 0-1.25-.56-1.25-1.25v-9.5z" />
-      </svg>
-    ),
+      "Get matched with positions that perfectly align with your skills, experience, and career goals. Our AI understands both your potential and job requirements.",
+    icon: <FiBriefcase className="w-6 h-6" />,
   },
   {
-    name: "Instant Feedback",
+    name: "Smart CV Analysis",
     description:
-      "Get real-time suggestions and improvements for your resume content, structure, and formatting.",
-    icon: (
-      <svg
-        className="h-5 w-5 text-blue-600"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-      >
-        <path
-          fillRule="evenodd"
-          d="M10 2c-4.477 0-8.101 2.009-8.101 4.5 0 1.197.52 2.291 1.401 3.177.88.886 2.066 1.558 3.415 1.967l-.667 2h1.904l-.667-2c1.349-.409 2.535-1.081 3.415-1.967.881-.886 1.401-1.98 1.401-3.177 0-2.491-3.624-4.5-8.101-4.5zM3.714 14l.001-.001.002-.002.033-.032a28.52 28.52 0 012.277-1.997c.06-.045.12-.089.182-.133C7.42 11.057 8.682 10.5 10 10.5c1.318 0 2.58.557 3.791 1.335.062.044.122.088.182.133.791.596 1.583 1.28 2.277 1.997l.033.032.002.002L16.286 14H3.714z"
-          clipRule="evenodd"
-        />
-      </svg>
-    ),
+      "Receive detailed feedback on your CV with specific improvements for each job application. Stand out to employers and ATS systems.",
+    icon: <FiSearch className="w-6 h-6" />,
   },
   {
-    name: "ATS Optimization",
+    name: "Career Insights",
     description:
-      "Ensure your resume passes Applicant Tracking Systems with our keyword analysis and formatting recommendations.",
-    icon: (
-      <svg
-        className="h-5 w-5 text-blue-600"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-      >
-        <path
-          fillRule="evenodd"
-          d="M16.403 12.652a3 3 0 000-5.304 3 3 0 00-3.75-3.751 3 3 0 00-5.305 0 3 3 0 00-3.751 3.75 3 3 0 000 5.305 3 3 0 003.75 3.751 3 3 0 005.305 0 3 3 0 003.751-3.75zm-2.546-4.46a.75.75 0 00-1.214-.883l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
-          clipRule="evenodd"
-        />
-      </svg>
-    ),
+      "Access real-time market insights, salary data, and skill trends in your industry. Make informed decisions about your career path.",
+    icon: <FiTrendingUp className="w-6 h-6" />,
   },
 ];
+
+// Add a new section for Job Search Features
+const jobFeatures = [
+  {
+    title: "Smart Matching Algorithm",
+    description:
+      "Our AI analyzes over 50 data points to find your perfect job matches",
+    icon: <FiTarget className="w-8 h-8 text-blue-500" />,
+  },
+  {
+    title: "Personalized Job Alerts",
+    description:
+      "Get notified instantly when relevant positions become available",
+    icon: <FiBell className="w-8 h-8 text-blue-500" />,
+  },
+  {
+    title: "Application Tracking",
+    description:
+      "Monitor all your applications in one centralized dashboard",
+    icon: <FiClipboard className="w-8 h-8 text-blue-500" />,
+  },
+];
+
+const FeatureCard = ({ feature }) => (
+  <motion.div
+    whileHover={{ y: -5 }}
+    className="relative group"
+  >
+    <div className="absolute -inset-2 rounded-lg bg-gradient-to-r from-blue-100/50 to-indigo-100/50 opacity-0 group-hover:opacity-100 transition-all duration-300 blur-xl" />
+    <div className="relative p-8 bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl transition-all duration-300 group-hover:shadow-2xl border border-blue-50">
+      <div className="flex items-center gap-4 mb-4">
+        <div className="p-3 rounded-lg bg-blue-50 text-blue-600">
+          {feature.icon}
+        </div>
+        <h3 className="text-xl font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+          {feature.name}
+        </h3>
+      </div>
+      <p className="text-gray-600 leading-relaxed">
+        {feature.description}
+      </p>
+    </div>
+  </motion.div>
+)
+
+const FloatingElements = () => (
+  <div className="absolute inset-0 overflow-hidden pointer-events-none">
+    <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-blue-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob" />
+    <div className="absolute top-1/3 right-1/4 w-72 h-72 bg-indigo-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000" />
+    <div className="absolute bottom-1/4 left-1/2 w-72 h-72 bg-white rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000" />
+  </div>
+)
