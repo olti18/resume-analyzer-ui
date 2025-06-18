@@ -14,6 +14,7 @@ import LandingPage from "./components/LandingPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { Toaster } from 'react-hot-toast';
 import CvManager from './components/CvManager';
+import CvUpload from './components/CvUpload';
 
 import "./App.css";
 
@@ -39,8 +40,13 @@ function App() {
               </ProtectedRoute>
             }
           />
+          
+          <Route path="/" element={<div>Dashboard</div>} />
+          <Route path="/cv-upload" element={<CvUpload />} />
+          <Route path="/history" element={<div>History</div>} />
+          <Route path="/" element={<CvUpload />} />
           <Route path="/manage-cv" element={<CvManager />} />
-          <Route path="*" element={<Navigate to="/" />} />
+          {/* <Route path="/cv-upload" element={<CvUpload />} /> */}
         </Routes>
       </Router>
     </AuthProvider>
