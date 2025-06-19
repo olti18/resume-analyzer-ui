@@ -17,10 +17,10 @@ export default function LoginForm() {
     setError('');
     const result = await login(formData.username, formData.password);
     if (result.success) {
-      navigate('/resume');
+      navigate('/cv-upload'); // Redirect to CV upload page on successful login
     } else {
       setError(result.error);
-    }
+    } 
   };
 
   return (
