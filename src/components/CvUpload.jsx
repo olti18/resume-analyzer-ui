@@ -4,7 +4,7 @@ import Sidebar from './Sidebar';
 
 const CvUpload = () => {
   const [selectedFile, setSelectedFile] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);  
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -29,18 +29,41 @@ const CvUpload = () => {
     formData.append('file', selectedFile);
 
     try {
-      const response = await fetch("http://localhost:3000/Resume_Analyzer_db/api/cv/upload", {
-      method: "POST",
-      body: formData,
-      credentials: "include"
-    });
+      const token = document.cookie
+        .split('; ')
+        .find(row => row.startsWith('token='))
+        ?.split('=')[1];
 
-      // To handle the response:
+      if (!token) {
+        throw new Error('Authentication token not found');
+      }
+
+      const response = await fetch("http://localhost:3000/Resume_Analyzer_db/api/cv/upload", {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        }
+      });
+
+      if (response.status === 401) {
+        throw new Error('Authentication failed. Please login again.');
+      }
+
       if (!response.ok) {
         throw new Error("Failed to upload CV");
       }
+
       const data = await response.json();
-      setResult(data);
+      if (data.analysisResult?.summary && data.analysisResult?.suggestedImprovements) {
+        setResult({
+          summary: data.analysisResult.summary,
+          suggestedImprovements: data.analysisResult.suggestedImprovements
+        });
+      } else {
+        throw new Error("Invalid response format from server");
+      }
     } catch (err) {
       setError(err?.message || 'An error occurred while uploading the CV');
     } finally {
@@ -179,9 +202,33 @@ const CvUpload = () => {
               )}
 
               {result && (
-                <div className="mt-8">
-                  {/* ... existing result display ... */}
-                </div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-8 space-y-6"
+                >
+                  <div className="p-6 bg-blue-50 rounded-2xl">
+                    <h2 className="text-xl font-semibold text-blue-800 mb-4">CV Analysis Results</h2>
+                    
+                    {/* Summary Section */}
+                    <div className="mb-6">
+                      <h3 className="font-medium text-blue-700 mb-2">Summary</h3>
+                      <p className="text-slate-600">{result.summary}</p>
+                    </div>
+
+                    {/* Improvements Section */}
+                    <div>
+                      <h3 className="font-medium text-blue-700 mb-2">Suggested Improvements</h3>
+                      <div className="text-slate-600">
+                        {result.suggestedImprovements.split('\n').map((improvement, index) => (
+                          <p key={index} className="mb-2">
+                            {improvement}
+                          </p>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
               )}
             </motion.div>
           </div>
