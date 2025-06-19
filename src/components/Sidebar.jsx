@@ -17,12 +17,33 @@ const NAVIGATION_ITEMS = [
     badge: "New",
   },
   {
+    name: "Favorite Jobs",
+    path: "/test",
+    icon: "favorite",
+    ariaLabel: "Upload your CV",
+    badge: "PRO",
+  },
+  {
     name: "Scrape Jobs",
     path: "/jobs",
     icon: "work",
     ariaLabel: "Scrape Jobs",
     badge: "Beta",
     description: "Find relevant job postings",
+  },
+  {
+    name: "Job Recomm..",
+    path: "/job-recommendations",
+    icon: "recommend",
+    ariaLabel: "Upload your CV",
+    badge: "New",
+  },
+  {
+    name: "analysis",
+    path: "/tests",
+    icon: "analytics",
+    ariaLabel: "Upload your CV",
+    badge: "PRO",
   },
   {
     name: "History",

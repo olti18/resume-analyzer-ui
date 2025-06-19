@@ -17,6 +17,7 @@ import CvManager from './components/CvManager';
 import CvUpload from './components/CvUpload';
 
 import "./App.css";
+import JobRecommendations from "./components/JobRecommendations";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Analytics/>
         <SpeedInsights /> {/* Moved inside Router */}
         <Routes>
+          
           {/* Public Routes */}
           <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<LoginForm />} />
@@ -40,7 +42,8 @@ function App() {
               </ProtectedRoute>
             }
           />
-          
+          <Route path="/job-recommendations" element={<JobRecommendations cvId={53} />} />
+          {/* <Route path="/job-recommendations" element={<JobRecommendations />} /> */}
           <Route path="/" element={<div>Dashboard</div>} />
           <Route path="/cv-upload" element={<CvUpload />} />
           <Route path="/history" element={<div>History</div>} />
