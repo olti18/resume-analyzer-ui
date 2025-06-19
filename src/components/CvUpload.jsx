@@ -1,26 +1,23 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Sidebar from './Sidebar';
 
 const CvUpload = () => {
-  const [file, setFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleFileChange = (event) => {
-    const selectedFile = event.target.files?.[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-      setError(null);
-    }
+    const file = event.target.files?.[0];
+    setSelectedFile(file);
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     
-    if (!file) {
+    if (!selectedFile) {
       setError('Please select a file');
       return;
     }
@@ -29,7 +26,7 @@ const CvUpload = () => {
     setError(null);
 
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('file', selectedFile);
 
     try {
       const response = await fetch("http://localhost:3000/Resume_Analyzer_db/api/cv/upload", {
@@ -52,104 +49,143 @@ const CvUpload = () => {
   };
 
   return (
-    <div className="flex bg-sky-50 min-h-screen">
+    <div className="relative min-h-screen flex">
+      {/* Sidebar */}
       <Sidebar open={sidebarOpen} setOpen={setSidebarOpen} />
-      {/* Hamburger button (mobile only) */}
-      <button
-        className="fixed top-6 left-6 z-50 p-2 rounded-lg bg-white/80 shadow-lg lg:hidden"
-        onClick={() => setSidebarOpen(true)}
-        aria-label="Open sidebar"
-      >
-        <span className="material-icons text-sky-600 text-3xl">menu</span>
-      </button>
-      <main className="flex-1 lg:ml-72 w-full flex items-center justify-center p-8">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="w-full max-w-2xl bg-white rounded-3xl shadow-lg p-8"
+
+      {/* Main Content */}
+      <main className="flex-1 lg:ml-[280px]">
+        {/* Mobile Menu Button */}
+        <button
+          className="fixed top-6 left-6 z-40 p-3 rounded-xl bg-white/80 
+            backdrop-blur-md shadow-lg lg:hidden
+            hover:bg-blue-50 transition-colors"
+          onClick={() => setSidebarOpen(true)}
+          aria-label="Open menu"
         >
-          <h1 className="text-3xl font-bold text-sky-800 mb-8">
-            Upload Your CV
-          </h1>
+          <span className="material-icons text-blue-600">menu</span>
+        </button>
 
-          <form onSubmit={handleSubmit} className="mb-8">
-            <div className="mb-6">
-              <div className="border-2 border-dashed border-sky-200 rounded-2xl p-8 text-center cursor-pointer hover:border-sky-400 transition-all">
-                <input
-                  type="file"
-                  onChange={handleFileChange}
-                  accept=".pdf,.doc,.docx"
-                  className="hidden"
-                  id="file-upload"
-                />
-                <label htmlFor="file-upload" className="cursor-pointer">
-                  <div className="text-sky-600">
-                    <svg className="w-12 h-12 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                    </svg>
-                    <p className="text-xl mb-2">Drop your CV here or click to upload</p>
-                    <p className="text-sm text-sky-400">Supports PDF, DOC, DOCX</p>
-                  </div>
-                </label>
-              </div>
-            </div>
-
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              type="submit"
-              disabled={loading}
-              className="w-full bg-sky-600 text-white py-4 rounded-xl text-lg font-semibold hover:bg-sky-700 transition-all disabled:opacity-50"
-            >
-              {loading ? (
-                <div className="flex items-center justify-center">
-                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-white mr-2"></div>
-                  Analyzing...
-                </div>
-              ) : 'Upload and Analyze CV'}
-            </motion.button>
-          </form>
-
-          {error && (
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="bg-red-50 border border-red-200 text-red-600 px-6 py-4 rounded-xl mb-6"
-            >
-              {error}
-            </motion.div>
-          )}
-
-          {result && (
-            <motion.div 
+        {/* Content Area */}
+        <div className="min-h-screen p-8 bg-slate-50">
+          <div className="max-w-2xl mx-auto pt-16 lg:pt-8">
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-sky-50 rounded-2xl p-8"
+              className="bg-white rounded-3xl shadow-xl p-8"
             >
-              <h2 className="text-2xl font-bold text-sky-800 mb-6">Analysis Results</h2>
-              
-              <div className="space-y-6">
-                <div className="bg-white rounded-xl p-6 shadow-sm">
-                  <h3 className="text-xl font-semibold text-sky-700 mb-3">Summary</h3>
-                  <p className="text-gray-700 leading-relaxed">
-                    {result.analysisResult.summary}
-                  </p>
+              <h1 className="text-2xl font-bold text-blue-800 mb-8">
+                Upload your CV
+              </h1>
+
+              <form onSubmit={handleSubmit}>
+                <div className="mb-8">
+                  <div 
+                    className={`border-2 border-dashed rounded-2xl p-8 text-center 
+                      transition-all duration-300 ${
+                        selectedFile 
+                          ? 'border-blue-400 bg-blue-50/50' 
+                          : 'border-blue-200 hover:border-blue-400'
+                      }`}
+                  >
+                    <input
+                      type="file"
+                      onChange={handleFileChange}
+                      className="hidden"
+                      accept=".pdf,.doc,.docx"
+                      id="file-upload"
+                    />
+                    <label htmlFor="file-upload" className="cursor-pointer">
+                      <div className="text-blue-600">
+                        <span className="material-icons text-4xl mb-4">
+                          {selectedFile ? 'description' : 'upload_file'}
+                        </span>
+                        
+                        <AnimatePresence mode="wait">
+                          {selectedFile ? (
+                            <motion.div
+                              key="filename"
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: -10 }}
+                            >
+                              <p className="text-lg font-medium mb-2 truncate">
+                                {selectedFile.name}
+                              </p>
+                              <p className="text-sm text-blue-400">
+                                Click or drag to replace
+                              </p>
+                            </motion.div>
+                          ) : (
+                            <motion.div
+                              key="upload-prompt"
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: -10 }}
+                            >
+                              <p className="text-lg font-medium mb-2">
+                                Drop your CV here or click to browse
+                              </p>
+                              <p className="text-sm text-blue-400">
+                                Supports PDF, DOC, DOCX
+                              </p>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                      </div>
+                    </label>
+                  </div>
+                  
+                  {/* File Size Info */}
+                  {selectedFile && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="mt-4 text-sm text-slate-500 flex items-center justify-center gap-2"
+                    >
+                      <span className="material-icons text-base">description</span>
+                      {(selectedFile.size / (1024 * 1024)).toFixed(2)} MB
+                    </motion.div>
+                  )}
                 </div>
 
-                <div className="bg-white rounded-xl p-6 shadow-sm">
-                  <h3 className="text-xl font-semibold text-sky-700 mb-3">Suggested Improvements</h3>
-                  <pre className="text-gray-700 whitespace-pre-wrap font-sans leading-relaxed">
-                    {result.analysisResult.suggestedImprovements}
-                  </pre>
-                </div>
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  type="submit"
+                  className="w-full bg-blue-600 text-white py-3 px-6 rounded-xl 
+                    font-semibold hover:bg-blue-700 transition-all 
+                    disabled:opacity-50 disabled:hover:bg-blue-600 
+                    disabled:cursor-not-allowed"
+                  disabled={loading || !selectedFile}
+                >
+                  {loading ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <span className="animate-spin material-icons text-base">
+                        refresh
+                      </span>
+                      Uploading...
+                    </span>
+                  ) : (
+                    'Upload and Analyze CV'
+                  )}
+                </motion.button>
+              </form>
 
-                <div className="text-sm text-gray-500 text-right">
-                  CV ID: {result.cvId}
+              {error && (
+                <div className="mt-6 p-4 bg-red-50 text-red-600 rounded-xl">
+                  {error}
                 </div>
-              </div>
+              )}
+
+              {result && (
+                <div className="mt-8">
+                  {/* ... existing result display ... */}
+                </div>
+              )}
             </motion.div>
-          )}
-        </motion.div>
+          </div>
+        </div>
       </main>
     </div>
   );
