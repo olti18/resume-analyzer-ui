@@ -91,7 +91,8 @@ const CvUpload = () => {
 
         {/* Content Area */}
         <div className="min-h-screen p-8 bg-slate-50">
-          <div className="max-w-2xl mx-auto pt-16 lg:pt-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 pt-16 lg:pt-8">
+            {/* Upload Section */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -200,35 +201,45 @@ const CvUpload = () => {
                   {error}
                 </div>
               )}
+            </motion.div>
 
-              {result && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mt-8 space-y-6"
-                >
-                  <div className="p-6 bg-blue-50 rounded-2xl">
-                    <h2 className="text-xl font-semibold text-blue-800 mb-4">CV Analysis Results</h2>
-                    
-                    {/* Summary Section */}
-                    <div className="mb-6">
-                      <h3 className="font-medium text-blue-700 mb-2">Summary</h3>
-                      <p className="text-slate-600">{result.summary}</p>
-                    </div>
+            {/* Analysis Results Section */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-white rounded-3xl shadow-xl p-8"
+            >
+              <h2 className="text-2xl font-bold text-blue-800 mb-8">
+                Analysis Results
+              </h2>
 
-                    {/* Improvements Section */}
-                    <div>
-                      <h3 className="font-medium text-blue-700 mb-2">Suggested Improvements</h3>
-                      <div className="text-slate-600">
-                        {result.suggestedImprovements.split('\n').map((improvement, index) => (
-                          <p key={index} className="mb-2">
-                            {improvement}
-                          </p>
-                        ))}
-                      </div>
+              {result ? (
+                <div className="space-y-6">
+                  <div>
+                    <h3 className="text-lg font-medium text-blue-700 mb-2">
+                      Summary
+                    </h3>
+                    <p className="text-slate-600">{result.summary}</p>
+                  </div>
+
+                  <div>
+                    <h3 className="text-lg font-medium text-blue-700 mb-2">
+                      Suggested Improvements
+                    </h3>
+                    <div className="space-y-2">
+                      {result.suggestedImprovements.split('\n').map((improvement, index) => (
+                        <p key={index} className="text-slate-600">
+                          {improvement}
+                        </p>
+                      ))}
                     </div>
                   </div>
-                </motion.div>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center h-[400px] text-slate-400">
+                  <span className="material-icons text-4xl mb-4">description</span>
+                  <p>Upload a CV to see analysis results</p>
+                </div>
               )}
             </motion.div>
           </div>
