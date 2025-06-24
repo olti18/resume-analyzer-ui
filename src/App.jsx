@@ -27,7 +27,7 @@ function App() {
       <Router>
         <Toaster position="top-right" />
         <Analytics/>
-        <SpeedInsights /> {/* Moved inside Router */}
+        <SpeedInsights /> 
         <Routes>
           
           {/* Public Routes */}
@@ -46,14 +46,11 @@ function App() {
             }
           />
           <Route path="/job-recommendations" element={<JobRecommendations cvId={53} />} />
-          {/* <Route path="/job-recommendations" element={<JobRecommendations />} /> */}
           <Route path="/" element={<div>Dashboard</div>} />
           <Route path="/cv-upload" element={<CvUpload />} />
           <Route path="/history" element={<div>History</div>} />
           <Route path="/" element={<CvUpload />} />
           <Route path="/manage-cv" element={<CvManager />} />
-          {/* <Route path="/features" element={<FeaturesPage />} /> */}
-          {/* <Route path="/cv-upload" element={<CvUpload />} /> */}
         </Routes>
       </Router>
     </AuthProvider>
