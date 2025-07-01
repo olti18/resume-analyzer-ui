@@ -7,16 +7,19 @@ const JobRecommendations = ({ cvId }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [favoriteLoading, setFavoriteLoading] = useState(null);
+  const [favoriteSuccess, setFavoriteSuccess] = useState(null);
+
+  // Move token extraction here so it's available everywhere in the component
+  const token = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("token="))
+    ?.split("=")[1];
 
   useEffect(() => {
     if (!cvId) return;
     setLoading(true);
     setError(null);
-
-    const token = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("token="))
-      ?.split("=")[1];
 
     fetch(
       `http://localhost:3000/Resume_Analyzer_db/api/cv/recommendations?cvId=${cvId}`,
@@ -40,6 +43,67 @@ const JobRecommendations = ({ cvId }) => {
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, [cvId]);
+
+  // Add to favorites handler
+  const handleFavorite = async (job, idx) => {
+    // Only require these fields to be non-empty/non-null
+    const requiredFields = [
+      "title",
+      "company",
+      "location",
+      "link",
+      "expires",
+      "matchScore",
+    ];
+    const favoriteJob = {
+      title: job.title || "",
+      company: job.company || "",
+      location: job.location || "",
+      link: job.link || "",
+      expires: job.expires || "",
+      description: job.description || "", // allow empty/nullable
+      matchScore: job.matchScore != null ? job.matchScore : 0,
+    };
+
+    // Only check required fields (not description)
+    const missing = requiredFields.filter(
+      (key) => favoriteJob[key] === "" || favoriteJob[key] === null
+    );
+
+    if (missing.length > 0) {
+      alert(
+        `Missing or empty fields: ${missing.join(", ")}. All required job fields must be present and not null.`
+      );
+      return;
+    }
+
+    setFavoriteLoading(idx);
+    setFavoriteSuccess(null);
+    try {
+      const response = await fetch(
+        "http://localhost:3000/Resume_Analyzer_db/api/favorites",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: token
+            ? {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              }
+            : {
+                "Content-Type": "application/json",
+              },
+          body: JSON.stringify(favoriteJob),
+        }
+      );
+      if (!response.ok) throw new Error(await response.text());
+      setFavoriteSuccess(idx);
+      setTimeout(() => setFavoriteSuccess(null), 1500);
+    } catch (e) {
+      alert("Failed to save favorite: " + e.message);
+    }
+    setFavoriteLoading(null);
+  };
 
   return (
     <div className="relative min-h-screen flex bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
@@ -93,8 +157,25 @@ const JobRecommendations = ({ cvId }) => {
                     boxShadow:
                       "0 8px 32px 0 rgba(60, 120, 255, 0.15)",
                   }}
-                  className="bg-gradient-to-br from-blue-50/80 to-indigo-50/80 rounded-2xl p-7 shadow hover:shadow-xl transition-all border border-blue-100/60"
+                  className="relative bg-gradient-to-br from-blue-50/80 to-indigo-50/80 rounded-2xl p-7 shadow hover:shadow-xl transition-all border border-blue-100/60"
                 >
+                  {/* Heart Icon */}
+                  <button
+                    className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/80 hover:bg-pink-100 transition-colors"
+                    title="Add to favorites"
+                    onClick={() => handleFavorite(job, idx)}
+                    disabled={favoriteLoading === idx}
+                  >
+                    <span
+                      className={`material-icons text-2xl transition-colors ${
+                        favoriteSuccess === idx
+                          ? "text-pink-500"
+                          : "text-gray-400 hover:text-pink-500"
+                      }`}
+                    >
+                      {favoriteSuccess === idx ? "favorite" : "favorite_border"}
+                    </span>
+                  </button>
                   <div className="flex flex-col gap-2 mb-3">
                     <a
                       href={job.link.replace(
